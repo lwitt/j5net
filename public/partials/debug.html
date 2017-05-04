@@ -1,0 +1,58 @@
+
+<!-- <table class="table table-striped table-hover table-bordered">
+	<tbody>
+		<tr ng-repeat="node in nodes">
+	    		<td><a href="#/detail/{{node.id}}"><span class="badge">{{node.id}}</span> {{node.description}}</a></td>
+	    		<td>{{node.value1}}{{node.unit1}}</td>
+	    		<td>{{node.value2}}{{node.unit2}}</td>
+		</tr>
+	</tbody>
+</table> -->
+<div class="container">
+	<div class="progress-wrapper">
+		<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'20px'}">20,7°C</div>
+
+		<round-progress
+		    max="40"
+		    current="22"
+		    color="#45ccce"
+		    bgcolor="#eaeaea"
+		    radius="60"
+		    stroke="8"
+		    semi="false"
+		    rounded="true"
+		    clockwise="true"
+		    responsive="false"
+		    duration="700"
+		    animation="easeOutBounce"
+		    animation-delay="0">
+		</round-progress>
+	</div>
+
+	debug view
+</div>
+
+
+<div class="sk-cube-grid">
+  <div class="sk-cube sk-cube1"></div>
+  <div class="sk-cube sk-cube2"></div>
+  <div class="sk-cube sk-cube3"></div>
+  <div class="sk-cube sk-cube4"></div>
+  <div class="sk-cube sk-cube5"></div>
+  <div class="sk-cube sk-cube6"></div>
+  <div class="sk-cube sk-cube7"></div>
+  <div class="sk-cube sk-cube8"></div>
+  <div class="sk-cube sk-cube9"></div>
+</div>
+
+<!-- var transform = ($scope.isSemi ? '' : 'translateY(-50%) ') + 'translateX(-50%)';
+
+                return {
+                    'top': $scope.isSemi ? 'auto' : '50%',
+                    'bottom': $scope.isSemi ? '5%' : 'auto',
+                    'left': '50%',
+                    'transform': transform,
+                    '-moz-transform': transform,
+                    '-webkit-transform': transform,
+                    'font-size': $scope.radius/3.5 + 'px'
+                }; -->

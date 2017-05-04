@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="j4net">
+    <head>
+        <title>jnet 5.0</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="bower_components/angular-socket-io/socket.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+        <script type="text/javascript" src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+
+        <script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
+        <script type="text/javascript" src="bower_components/nvd3/build/nv.d3.min.js"></script> <!-- or use another assembly -->
+        <script type="text/javascript" src="bower_components/angular-nvd3/dist/angular-nvd3.min.js"></script>
+
+        <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+        <script type="text/javascript" src="bower_components/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
+
+        <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" /> -->
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-slate.min.css" />
+        <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
+        <link rel="stylesheet" href="css/j4net.css">
+
+    </head>
+    <body ng-controller="mainController">
+
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span> jnet 5.0</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="active" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">nodes <span class="badge ng-cloak">{{nodescount}}</span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="(key,value) in nodes"><a href="#/detail/{{key}}"></span> {{value.name}}</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+                <li><a href="#/list">details</a></li>
+                <li><a href="#/setup">setup</a></li>
+                <li><a href="#/debug">debug</a></li>
+
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <!-- <li><a href="#">Link</a></li> -->
+                <!-- <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </li> -->
+                <li>
+                    <div ng-show="connected" class="glyphicon glyphicon-signal"></div>
+                    <div ng-hide="connected" class="glyphicon glyphicon-remove"></div>
+                </li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+
+        <div ng-view></div>
+        <!-- <footer class="footer">
+              <div class="container">
+                <p class="text-muted">&copy; 2016 - laurent witt</p>
+              </div>
+        </footer> -->
+        <div>lat: {{lat}} lng: {{lng}} {{googleMapsUrl}}</div>
+
+        <div map-lazy-load="https://maps.google.com/maps/api/js"
+            map-lazy-load-params="{{googleMapsUrl}}">
+            <ng-map zoom="19" center="[{{lat}},{{lng}}]">
+                <marker position="{{lat}},{{lng}}"
+                </marker>
+            </ng-map
+        </div>
+
+        <script type="text/javascript" src="app.js"></script>
+        <script type="text/javascript" src="js/controllers.js"></script>
+        <script type="text/javascript" src="js/controller-detail.js"></script>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+
+<table class="table table-striped table-hover text-center">
+	<thead>
+		<tr>
+			<th class="text-center"><small>id</th>
+			<th class="text-center"><small>value</th>
+			<th class="text-center"><small>battery level (V)</th>
+			<th class="text-center"><small>sequence</th>
+			<th class="text-center"><small>last update (s)</th>
+			<th class="text-center"><small>first seen (hh:mm:ss)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="(key,value) in nodes" ng-class="{'danger': value.lastUpdate>90}">
+			<td><a href="#/detail/{{key}}"><span class="badge">{{key}}</span><br><small>{{value.name}}</small></a></td>
+			<td>{{value.lastData.t}}°C</td>
+			<td>{{value.lastData.bat | number:2}}</td>
+			<td>{{value.lastData.seq}}</td>
+			<td>{{value.lastUpdate | secondsToString }}</td>
+			<td>{{value.firstSeen | secondsToDateTime | date:'HH:mm:ss'}}</td>
+		</tr>
+	</tbody>
+</table>
