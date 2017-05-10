@@ -8,6 +8,7 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
     $scope.lat = 0;
     $scope.lng = 0;
+    $scope.lastCarUpdate = NaN;
 
     // loading config (nodes to show in dashboard,..)
     $http.get('config.json').success(function(data) {
@@ -138,8 +139,12 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
     $scope.$on('socket:car-position', function (ev, data) {
         console.log("car position received");
+        console.log(data);
         $scope.lat = data.lat;
         $scope.lng = data.lng;
+        $scope.lastCarUpdate = (Date.now()-data.lastUpdate)/1000;
+        $scope.distanceFromWork = data.distanceFromWork;
+        $scope.distanceFromHome = data.distanceFromHome;
     });
 
     var askForDetail = function () {

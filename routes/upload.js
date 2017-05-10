@@ -15,13 +15,19 @@ router.post('/', function(req, res, next) {
     dest = dest_base+"car_position/";
 
     // console.log(req.body);
-
-    if (req.body.lat != null) broker.publish(dest+"latitude",""+req.body.lat,{qos:2});
-    if (req.body.lng != null) broker.publish(dest+"longitude",""+req.body.lng,{qos:2});
-    if (req.body.alt != null) broker.publish(dest+"altitude",""+req.body.alt,{qos:2});
-    if (req.body.speed != null) broker.publish(dest+"speed",""+req.body.speed,{qos:2});
-    if (req.body.dist != null) broker.publish(dest+"distance",""+req.body.dist,{qos:2});
-    if (req.body.nbsat != null) broker.publish(dest+"nbsat",""+req.body.nbsat,{qos:2});
+    if (req.body.lat != null && req.body.lng != null && req.body.alt != null && req.body.speed != null && req.body.nbsat != null) {
+        broker.publish(dest+"latitude",""+req.body.lat,{qos:2, retain:true});
+        broker.publish(dest+"longitude",""+req.body.lng,{qos:2, retain:true});
+        broker.publish(dest+"altitude",""+req.body.alt,{qos:2, retain:true});
+        broker.publish(dest+"speed",""+req.body.speed,{qos:2, retain:true});
+        // broker.publish(dest+"distance",""+req.body.dist,{qos:2, retain:true});
+        broker.publish(dest+"nbsat",""+req.body.nbsat,{qos:2, retain:true});
+        broker.publish(dest+"lastUpdate",Date.now().toString());
+        console.log("car position published on "+dest);
+    }
+    else {
+        console.log("invalid car position post");
+    }
 
     res.send('ok');
 });

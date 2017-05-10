@@ -13,7 +13,11 @@ var NodeInfoModel = null;
 var nodes = {};
 var nodeinfos = {};
 
-var lat = 0, lng = 0;
+var lat = NaN,
+    lng = NaN,
+    lastCarUpdate = NaN,
+    distanceFromWork = NaN,
+    distanceFromHome = NaN;
 
 module.exports = (http,app) => {
 
@@ -22,13 +26,36 @@ module.exports = (http,app) => {
     NodeDataModel = models.nodedata;
     NodeInfoModel = models.nodeinfo;
 
-    console.log("subs");
     var broker = app.get("mqtt_broker");
     broker.subscribe(app.get("mqtt_shared_base")+"car_position/latitude");
     broker.subscribe(app.get("mqtt_shared_base")+"car_position/longitude");
 
     broker.on("message", function(topic,data) {
         if (topic.startsWith(app.get("mqtt_shared_base")+"car_position")) {
+
+            lastCarUpdate = Date.now();
+
+            function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+              var R = 6371; // Radius of the earth in km
+              var dLat = deg2rad(lat2-lat1);  // deg2rad below
+              var dLon = deg2rad(lon2-lon1);
+              var a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2)
+                ;
+              var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+              var d = R * c; // Distance in km
+              return d;
+            }
+
+            function deg2rad(deg) {
+              return deg * (Math.PI/180)
+            }
+
+            distanceFromHome = getDistanceFromLatLonInKm (lat,lng,47.65687,7.288171);
+            distanceFromWork = getDistanceFromLatLonInKm (lat,lng,47.731333,7.287495);
+
             if (topic===app.get("mqtt_shared_base")+"car_position/latitude") {
                 lat = parseFloat(data);
             }
@@ -135,7 +162,7 @@ module.exports = (http,app) => {
         });
 
         socket.on('car-position', function (data) {
-            socket.emit("car-position",{lat:lat,lng:lng});
+            socket.emit("car-position",{lat:lat,lng:lng, lastUpdate: lastCarUpdate, distanceFromWork: distanceFromWork, distanceFromHome:distanceFromHome});
             console.log("car position asked");
         });
     });

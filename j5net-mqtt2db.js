@@ -67,7 +67,7 @@ module.exports = (app) => {
                             console.log(err);
                         });
 
-                        // ugly object clone :(
+                        // TODO ugly object clone :(
                         var obj = JSON.parse(JSON.stringify(n1));
                         delete obj.id;
                         delete obj._id;
