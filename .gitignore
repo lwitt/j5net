@@ -6,6 +6,7 @@ npm-debug.log*
 public/config.json
 config.js
 public/bower_components
+sslcerts
 
 # Runtime data
 pids

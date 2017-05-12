@@ -35,7 +35,6 @@ module.exports = (cbWeather,country,city,key) => {
                                     });
                               }
 
-                              console.log(forecasts);
                               cbWeather(city,code,temp,forecasts);
 
                         }
