@@ -147,28 +147,28 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
         $scope.distanceFromHome = data.distanceFromHome;
     });
 
-    var askForDetail = function () {
-
-        console.log("ask for detail");
-        $scope.graphstate = 1;
-
-        var startDate = new Date();
-        startDate.setHours (0,0,0,0);
-        var endDate = new Date();
-        endDate.setHours (23,59,59,0);
-
-        $scope.nvd3_data[0].values = [];
-
-        webSocket.emit(
-            'node-detail',
-            {   id: 25,
-                start : startDate.toISOString(),
-                end : endDate.toISOString(),
-            }
-        );
-    }
-
-    askForDetail();
+    // var askForDetail = function () {
+    //
+    //     console.log("ask for detail");
+    //     $scope.graphstate = 1;
+    //
+    //     var startDate = new Date();
+    //     startDate.setHours (0,0,0,0);
+    //     var endDate = new Date();
+    //     endDate.setHours (23,59,59,0);
+    //
+    //     $scope.nvd3_data[0].values = [];
+    //
+    //     webSocket.emit(
+    //         'node-detail',
+    //         {   id: 25,
+    //             start : startDate.toISOString(),
+    //             end : endDate.toISOString(),
+    //         }
+    //     );
+    // }
+    //
+    // askForDetail();
 
 }]);
 

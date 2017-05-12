@@ -38,15 +38,14 @@
 				{{((nodes[25].lastData.t && nodes[25].lastUpdate<120) ? (nodes[25].lastData.t | number:1)+"°C" : "n/a")}}
 			</div>
 			<round-progress max="45" current="((nodes[25].lastData.t && nodes[25].lastUpdate<120) ? nodes[25].lastData.t : 0)"
-			    color="#1fb1e1" bgcolor=rgba(0,0,0,0); radius="60" stroke="8" semi="false" rounded="true" clockwise="true" responsive="true" duration="700"
-			    animation="easeOutBounce" animation-delay="0">
-			</round-progress>
-		</div>
-		<div align="center"><a href="#/detail/25"><div><span class="badge">25</span></div><div><small>{{nodes[25].name || "n/a"}}</small></div></a></div>
+			color="#1fb1e1" bgcolor=rgba(0,0,0,0); radius="60" stroke="8" semi="false" rounded="true" clockwise="true" responsive="true" duration="700"
+			animation="easeOutBounce" animation-delay="0">
+		</round-progress>
 	</div>
-	<div class="col-xs2 col-md2">
-		&nbsp;
-	</div>
+	<div align="center"><a href="#/detail/25"><div><span class="badge">25</span></div><div><small>{{nodes[25].name || "n/a"}}</small></div></a></div>
+</div>
+<div class="col-xs2 col-md2">
+	&nbsp;
 </div>
 </div>
 <div class="row">
@@ -55,12 +54,19 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12 col-md-12">
-		<nvd3 options="nvd3_options" data="nvd3_data"></nvd3>
-	</div>
+	<div>{{lastCarUpdate==NaN ? "error" : lastCarUpdate|number:0 }} secs - home : {{distanceFromHome|number}}km / work : {{distanceFromWork|number}}km</div>
+	<div ng-if="lat!=0 && lng!=0" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{googleMapsUrl}}">
+		<ng-map zoom="16" center="[{{lat}},{{lng}}]">
+			<marker position="{{lat}},{{lng}}"
+		</marker>
+	</ng-map>
 </div>
-<div class="row">
-	<div class="col-xs-12 col-md-12" align="center">
-			&copy; laurent witt
-	</div>
+<div ng-if="lat==0 && lng==0">
+	unable to localize car
 </div>
+</div>
+<!-- <div class="row">
+<div class="col-xs-12 col-md-12">
+<nvd3 options="nvd3_options" data="nvd3_data"></nvd3>
+</div>
+</div> -->

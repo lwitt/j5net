@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html ng-app="j4net">
     <head>
-        <title>jnet 5.0</title>
+        <title>j5net</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -49,7 +49,7 @@ and open the template in the editor.
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span> jnet 5.0</a>
+              <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span> j5net</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -89,24 +89,15 @@ and open the template in the editor.
           </div><!-- /.container-fluid -->
         </nav>
 
-        <div ng-view></div>
+        <div class="container-fluid" ng-view></div>
         <!-- <footer class="footer">
               <div class="container">
                 <p class="text-muted">&copy; 2016 - laurent witt</p>
               </div>
         </footer> -->
-        <div>lat: {{lat}} lng: {{lng}} {{lastCarUpdate==NaN ? "error" : lastCarUpdate }}secs - home : {{distanceFromHome|number}}km / work : {{distanceFromWork|number}}km</div>
 
-        <div
-        <div ng-if="lat!=0 && lng!=0" map-lazy-load="https://maps.google.com/maps/api/js"
-            map-lazy-load-params="{{googleMapsUrl}}">
-            <ng-map zoom="18" center="[{{lat}},{{lng}}]">
-                <marker position="{{lat}},{{lng}}"
-                </marker>
-            </ng-map
-        </div>
-        <div ng-if="lat==0 && lng==0">
-            unable to localize car
+        <div align="center">
+        	<br>&copy; laurent witt
         </div>
 
         <script type="text/javascript" src="app.js"></script>
