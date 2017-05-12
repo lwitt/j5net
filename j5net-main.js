@@ -53,8 +53,8 @@ module.exports = (http,app) => {
               return deg * (Math.PI/180)
             }
 
-            distanceFromHome = getDistanceFromLatLonInKm (lat,lng,47.65687,7.288171);
-            distanceFromWork = getDistanceFromLatLonInKm (lat,lng,47.731333,7.287495);
+            distanceFromHome = getDistanceFromLatLonInKm (lat,lng,config.home_lat,config.home_lng);
+            distanceFromWork = getDistanceFromLatLonInKm (lat,lng,config.work_lat,config.work_lng);
 
             if (topic===app.get("mqtt_shared_base")+"car_position/latitude") {
                 lat = parseFloat(data);
@@ -68,7 +68,7 @@ module.exports = (http,app) => {
 
 
     //load dependencies
-    const weather = require('./j5net-weather.js')(app);
+    const weather = require('./j5net-weather.js')(app,config);
     const mqtt2db = require('./j5net-mqtt2db.js')(app);
 
 

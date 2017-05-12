@@ -1,8 +1,8 @@
 const http = require('http');
 
-module.exports = (cb_weather) => {
+module.exports = (cbWeather) => {
     return {
-        getYahooWeather: () => {
+        getData: () => {
 
             console.log("getting weather from yahoo");
 
@@ -88,7 +88,7 @@ module.exports = (cb_weather) => {
 
                             var forecast5 = JSON.stringify({day:day5,low:low5,high:high5,code:code5});
 
-                            cb_weather(city,code,temp,forecast1,forecast2,forecast3,forecast4,forecast5);
+                            cbWeather(city,code,temp,forecast1,forecast2,forecast3,forecast4,forecast5);
 
                         }
                     });

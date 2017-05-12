@@ -1,10 +1,11 @@
-const weather = require('./j5net-weather-yahoo.js');
+//const weather = require('./j5net-weather-yahoo.js');
+const weather = require('./j5net-weather-wunderground.js');
 const schedule = require('node-schedule');
 
 var broker = null;
 var dest_base = "";
 
-const cbPublishWeather = function (city,code,temp,forecast1,forecast2,forecast3,forecast4,forecast5) {
+const cbPublishWeather = function (city,code,temp,forecasts) {
 
     // console.log(city,code,temp,forecast1,forecast2,forecast3,forecast4,forecast5);
 
@@ -20,31 +21,19 @@ const cbPublishWeather = function (city,code,temp,forecast1,forecast2,forecast3,
     console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing " + code + " on " + dest);
     broker.publish(dest,code.toString(),{qos:2});
 
-    dest = dest_base+"forecast1";
-    console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing " + forecast1 + " on " + dest);
-    broker.publish(dest,forecast1,{qos:2});
-
-    dest = dest_base+"forecast2";
-    console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing " + forecast2 + " on " + dest);
-    broker.publish(dest,forecast2,{qos:2});
-
-    dest = dest_base+"forecast3";
-    console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing " + forecast3 + " on " + dest);
-    broker.publish(dest,forecast3,{qos:2});
-
-    dest = dest_base+"forecast4";
-    console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing " + forecast4 + " on " + dest);
-    broker.publish(dest,forecast4,{qos:2});
-
-    dest = dest_base+"forecast5";
-    console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing " + forecast5 + " on " + dest);
-    broker.publish(dest,forecast5,{qos:2});
+    console.log(new Date().toLocaleTimeString() + " - [mqtt] publishing forecasts on " + dest + "[1-5]");
+    for (var i=1;i<6;i++) {
+          dest = dest_base+"forecast"+i;
+          broker.publish(dest,JSON.stringify(forecasts[i-1]),{qos:2});
+   }
 };
 
-module.exports = (app) => {
+module.exports = (app,config) => {
     broker = app.get('mqtt_broker');
     dest_base = app.get("mqtt_shared_base");
 
-    var myweather = weather(cbPublishWeather);
-    var j = schedule.scheduleJob('*/10 * * * *', myweather.getYahooWeather);
+    var myweather = weather(cbPublishWeather,config.wunderground_country,config.wunderground_city,config.wunderground_key);
+    // var j = schedule.scheduleJob('*/10 * * * *', myweather.getData);
+    myweather.getData();
+
 }
