@@ -15,7 +15,7 @@
 		<tr ng-repeat="(key,value) in nodes" ng-class="{'danger': value.lastUpdate>90}">
 			<td><a href="#/detail/{{key}}"><span class="badge">{{key}}</span><br><small>{{value.name}}</small></a></td>
 			<td>{{value.lastData.t}}°C</td>
-			<td>{{value.lastData.h}}%</td>
+			<td>{{value.lastData.h?value.lastData.h+"%":"-"}}</td>
 			<td>{{value.lastData.bat | number:2}}</td>
 			<td>{{value.lastData.seq}}</td>
 			<td>{{value.lastUpdate | secondsToString }}</td>
