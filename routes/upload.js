@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
         broker.publish(dest+"speed",""+req.body.speed,{qos:2, retain:true});
         // broker.publish(dest+"distance",""+req.body.dist,{qos:2, retain:true});
         broker.publish(dest+"nbsat",""+req.body.nbsat,{qos:2, retain:true});
-        broker.publish(dest+"lastUpdate",Date.now().toString());
+        broker.publish(dest+"lastUpdate",Date.now().toString(),{qos:2, retain:true});
         console.log("car position published on "+dest);
     }
     else {
