@@ -1,46 +1,64 @@
 const http = require('http');
+const async = require('async');
 
-module.exports = (cbWeather,country,city,key) => {
-    return {
-        getData: () => {
+module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => {
+      return {
+            getData: () => {
 
-            console.log("getting weather from Weather Underground");
+                  console.log("getting weather from Weather Underground");
 
-            var jsondata="";
+                  const URLS = [    "http://api.wunderground.com/api/"+key+"/conditions/q/"+obs_country+"/+"+obs_city+".json",
+                                    "http://api.wunderground.com/api/"+key+"/forecast10day/q/"+home_country+"/"+home_city+".json"];
 
-            http.get("http://api.wunderground.com/api/"+key+"/forecast10day/q/"+country+"/"+city+".json",
-            function (res) {
+                  var forecasts=[],code="",temp=NaN;
 
-                if (res.statusCode==200) {
-                    res.on('data', function (chunk) {
-                        jsondata+=chunk;
-                    });
+                  async.each(
+                        URLS,
+                        function(url,callback){
+                              var jsondata="";
 
-                    res.on('end', function() {
+                              http.get(url,
+                                    function (res) {
+                                          if (res.statusCode==200) {
+                                                res.on('data', function (chunk) {
+                                                      jsondata+=chunk;
+                                                });
 
-                        // console.log(jsondata);
+                                                res.on('end', function() {
+                                                      var j = JSON.parse(jsondata);
 
-                        var j = JSON.parse(jsondata);
+                                                      if (j && j.response) {
+                                                            if (j.forecast) {
+                                                                  forecasts = [];
+                                                                  for (var i=0;i<5;i++) {
+                                                                        forecasts.push({
+                                                                              day:  j.forecast.simpleforecast.forecastday[i].date.weekday_short,
+                                                                              low:  parseInt(j.forecast.simpleforecast.forecastday[i].low.celsius),
+                                                                              high: parseInt(j.forecast.simpleforecast.forecastday[i].high.celsius),
+                                                                              code: j.forecast.simpleforecast.forecastday[i].icon
+                                                                        });
+                                                                  }
+                                                            }
+                                                            if (j.current_observation) {
+                                                                  code = j.current_observation.icon;
+                                                                  temp = j.current_observation.temp_c;
+                                                            }
 
-                        if (j && j.response && j.forecast) {
-                              var code="",temp="";
-                              var forecasts=[];
-
-                              for (var i=0;i<5;i++) {
-                                    forecasts.push({
-                                                day:  j.forecast.simpleforecast.forecastday[i].date.weekday_short,
-                                                low:  parseInt(j.forecast.simpleforecast.forecastday[i].low.celsius),
-                                                high: parseInt(j.forecast.simpleforecast.forecastday[i].high.celsius),
-                                                code: j.forecast.simpleforecast.forecastday[i].icon
+                                                      }
+                                                      callback(null);
+                                                });
+                                          }
+                                    }).on('error', function(e) {
+                                          console.log("Got error during HTTP request!");
+                                          callback(e);
                                     });
+                              },
+                              function(err){
+                                    if (!err) {
+                                          cbWeather(home_city,code,temp,forecasts);
+                                    }
                               }
-
-                              cbWeather(city,code,temp,forecasts);
-
-                        }
-                    });
-                }
-            }).on('error', function(e) { console.log("Got error during HTTP request!");});
-        }
-    }
-}
+                        );
+                  }
+            }
+      }

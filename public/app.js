@@ -40,6 +40,7 @@
         mySocket.forward('nodes');
         mySocket.forward('node-detail');
         mySocket.forward('car-position');
+        mySocket.forward('weather');
         return mySocket;
     });
 

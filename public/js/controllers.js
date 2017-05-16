@@ -9,6 +9,7 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
       $scope.lat = NaN;
       $scope.lng = NaN;
       $scope.lastCarUpdate = NaN;
+      $scope.weather = {};
 
       // loading config (nodes to show in dashboard,..)
       $http.get('config.json').success(function(data) {
@@ -57,7 +58,7 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
             }
       };
 
-      var timer = null;
+      var timer = null, timer2 = null;
 
 
 
@@ -102,13 +103,15 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
             // getting the initial node list
             webSocket.emit('nodes');
             webSocket.emit('car-position');
+            webSocket.emit('weather');
       });
 
       $scope.$on('socket:connect_error', function (ev, data){
             console.log('connect_error');
             $scope.connected = false;
             clearInterval(timer);
-            timer = null;
+            clearInterval(timer2);
+            timer = null; time2 = null;
       });
 
       setInterval(function() {
@@ -119,6 +122,13 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
                         webSocket.emit('car-position');
                         // console.log("asked for nodes");
                   },20000);
+            }
+
+            if (timer2==null && $scope.connected==true) {
+                  console.log("initializing timer2");
+                  timer2 = setInterval(function() {
+                        webSocket.emit('weather');
+                  },30*60000);
             }
       },5000);
 
@@ -145,9 +155,12 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
             if (data.lastUpdate)          $scope.lastCarUpdate = (Date.now()-data.lastUpdate)/1000;
             if (data.distanceFromWork)    $scope.distanceFromWork = data.distanceFromWork;
             if (data.distanceFromHome)    $scope.distanceFromHome = data.distanceFromHome;
+      });
 
-            console.log($scope.lat);
-            console.log($scope.lng);
+      $scope.$on('socket:weather', function (ev, data) {
+            console.log("weather received");
+            console.log(data);
+            $scope.weather = data;
       });
 
       // var askForDetail = function () {
