@@ -39,6 +39,7 @@ module.exports = (app,config) => {
                                     config.wunderground_obs_country,
                                     config.wunderground_obs_city,
                                     config.wunderground_key);
-      // var j = schedule.scheduleJob('*/10 * * * *', myweather.getData);
-      myweather.getData();
+
+      var j = schedule.scheduleJob('*/10 * * * *', myweather.getData);
+      //myweather.getData();
 }
