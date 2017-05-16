@@ -51,14 +51,16 @@
 		&nbsp;
 	</div>
 </div>
-<div class="row">
+<div class="row panel">
 	<div class="col-xs-2 col-md-2" align="center">
 		<img ng-src="imgs/icons/white/svg/{{weather.currentCode}}.svg">
+		<h4>maintenant</h4>
 		<h3>{{weather.currentTemp}}&deg;</h3>
 	</div>
 	<ng-repeat
 	<div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts">
 		<img ng-src="imgs/icons/white/svg/{{forecast.code}}.svg">
+		<h4>{{forecast.day}}</h4>
 		<h4>{{forecast.low}}&deg;</h4>
 		<h4>{{forecast.high}}&deg;</h4>
 	</div>
@@ -68,6 +70,7 @@
 		&nbsp;
 	</div>
 </div>
+
 <div ng-if="(lat && lng)" class="row">
 	<div>{{lat}} {{lng}}</div>
 	<div>{{!lastCarUpdate ? "error" : (lastCarUpdate | secondsToString) }} - home : {{distanceFromHome|number}}km / work : {{distanceFromWork|number}}km</div>
@@ -78,7 +81,10 @@
 	</div>
 </div>
 <div ng-if="(!lat || !lng)" class="row" align="center">
-	<h4>unable to localize car..</h4>
+	<div class="alert alert-warning alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><div class="glyphicon glyphicon-remove-circle"></div></span></button>
+	  	<strong>Warning!</strong> unable to localize car.
+	</div>
 </div>
 <!-- <div class="row">
 <div class="col-xs-12 col-md-12">

@@ -1,6 +1,16 @@
 const http = require('http');
 const async = require('async');
 
+const dayLocalization = {
+      "Mon" : "lun",
+      "Tue" : "mar",
+      "Wed" : "mer",
+      "Thu" : "jeu",
+      "Fri" : "ven",
+      "Sat" : "sam",
+      "Sun" : "dim"
+};
+
 module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => {
       return {
             getData: () => {
@@ -32,7 +42,7 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                                                   forecasts = [];
                                                                   for (var i=0;i<5;i++) {
                                                                         forecasts.push({
-                                                                              day:  j.forecast.simpleforecast.forecastday[i].date.weekday_short,
+                                                                              day:  dayLocalization[j.forecast.simpleforecast.forecastday[i].date.weekday_short],
                                                                               low:  parseInt(j.forecast.simpleforecast.forecastday[i].low.celsius),
                                                                               high: parseInt(j.forecast.simpleforecast.forecastday[i].high.celsius),
                                                                               code: j.forecast.simpleforecast.forecastday[i].icon
