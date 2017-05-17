@@ -1,11 +1,12 @@
 {
-    "1" : {"name" :    "gateway"          },
-    "5" : {"name" :    "garage"           },
-    "10": {"name" :    "bureau"           },
-    "11": {"name" :    "séjour"           },
-    "12": {"name" :    "cuisine"          },
-    "13": {"name" :    "entrée"           },
-    "20": {"name" :    "extérieur nord"   },
-    "21": {"name" :    "extérieur sud"    },
-    "25": {"name" :    "piscine"          }
+    "1" :   {"name" :    "gateway"          },
+    "5" :   {"name" :    "garage"           },
+    "10":   {"name" :    "bureau"           },
+    "11":   {"name" :    "séjour"           },
+    "12":   {"name" :    "cuisine"          },
+    "13":   {"name" :    "entrée"           },
+    "20":   {"name" :    "extérieur nord"   },
+    "21":   {"name" :    "extérieur sud"    },
+    "25":   {"name" :    "piscine"          },
+    "2021": {"name" :    "extérieur"        }
 }
