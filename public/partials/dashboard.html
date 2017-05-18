@@ -55,7 +55,7 @@
 	<div class="col-xs-2 col-md-2" align="center">
 		<img ng-src="imgs/icons/white/svg/{{weather.currentCode}}.svg">
 		<h5>actuel</h5>
-		<h3>{{((nodes[2021].lastData.t && nodes[2021].lastUpdate<300) ? (nodes[2021].lastData.t | number:1)+"°C" : "n/a")}}</h3>
+		<h4>{{((nodes[2021].lastData.t && nodes[2021].lastUpdate<300) ? (nodes[2021].lastData.t | number:1)+"°C" : "n/a")}}</h4>
 	</div>
 	<ng-repeat
 	<div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts">
