@@ -10,7 +10,7 @@ module.exports = (app,config) => {
       broker = app.get('mqtt_broker');
       dest_base = app.get("mqtt_shared_base")+"weather/";
 
-      const cbPublishWeather = function (city,code,temp,forecasts) {
+      const cbPublishWeather = function (city,code,temp,forecasts,astronomy) {
 
             dest = dest_base+"current_temp";
             broker.publish(dest,temp.toString(),{qos:2,retain:true});
@@ -31,6 +31,9 @@ module.exports = (app,config) => {
 
             dest = dest_base+"last_update";
             broker.publish(dest,Date.now().toString(),{qos:2,retain:true});
+
+            dest = dest_base+"astronomy";
+            broker.publish(dest,JSON.stringify(astronomy),{qos:2,retain:true});
       };
 
       var myweather = weatherplugin(cbPublishWeather,

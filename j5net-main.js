@@ -63,7 +63,7 @@ module.exports = (http,app) => {
                         distanceFromHome = getDistanceFromLatLonInKm (lat,lng,config.home_lat,config.home_lng);
                         distanceFromWork = getDistanceFromLatLonInKm (lat,lng,config.work_lat,config.work_lng);
 
-                        lastCarUpdate = data;
+                        lastCarUpdate = parseInt(data.toString());
                   }
             }
 
@@ -83,6 +83,9 @@ module.exports = (http,app) => {
 
                   if (topic===app.get("mqtt_shared_base")+"weather/last_update")
                         weather.lastUpdate = Date(data);
+
+                  if (topic===app.get("mqtt_shared_base")+"weather/astronomy")
+                        weather.astronomy = JSON.parse(data);
             }
       });
 
@@ -106,8 +109,7 @@ module.exports = (http,app) => {
       var io = require('socket.io')(http);
 
       io.on('connection', function (socket) {
-            console.log("[websocket] new connection".cyan);
-
+            console.log(('['+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - [websocket] new connection').cyan);
             socket.on('node-detail', function (data) {
                   //console.log("frontend asked for details");
 
@@ -140,13 +142,13 @@ module.exports = (http,app) => {
                                           res["tmin"] = tmin;
                                           res["tmax"] = tmax;
 
-                                          console.log("sending details");
+                                          console.log(("[" + new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - sending node details').cyan);
                                           // console.log("tmin="+tmin);
                                           // console.log("tmax="+tmax);
                                           socket.emit('node-detail',res);
                                     }
                                     else
-                                    console.log("query error");
+                                    console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - query error').red);
                               }
                         );
                   });
@@ -155,7 +157,6 @@ module.exports = (http,app) => {
                   /* web client asks for node list */
 
                   socket.on('nodes', function (data) {
-                        // console.log('frontend asked for nodes');
                         // initialization of nodes & nodeinfos based on database
 
                         NodeModel.find({}, function (err,res){
@@ -183,12 +184,12 @@ module.exports = (http,app) => {
 
                   socket.on('car-position', function (data) {
                         socket.emit("car-position",{lat:lat,lng:lng, lastUpdate: lastCarUpdate, distanceFromWork: distanceFromWork, distanceFromHome:distanceFromHome});
-                        console.log("car position asked");
+                        // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - car position asked').cyan);
                   });
 
                   socket.on('weather', function (data) {
                         socket.emit("weather",weather);
-                        console.log("weather asked");
+                        // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - weather asked').cyan);
                   });
             });
 

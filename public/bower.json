@@ -16,11 +16,15 @@
     "angular-resource": "~1.4.5",
     "angular-socket-io": "~0.7.0",
     "angular-route": "~1.4.5",
-    "bootstrap": "~3.3.5",
+    "bootstrap": "v4.0.0-alpha.6",
     "angular": "~1.4.5",
     "angular-svg-round-progressbar": "^0.4.6",
     "angular-nvd3": "^1.0.8",
     "ngmap": "^1.18.4",
-    "angular-bootstrap": "^2.5.0"
+    "angular-bootstrap": "^2.5.0",
+    "bootswatch": "^3.3.7"
+  },
+  "resolutions": {
+    "bootstrap": "v4.0.0-alpha.6"
   }
 }

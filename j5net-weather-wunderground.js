@@ -15,12 +15,13 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
       return {
             getData: () => {
 
-                  console.log("getting weather from Weather Underground");
+                  console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - [weather] getting weather from Weather Underground').white);
 
                   const URLS = [    "http://api.wunderground.com/api/"+key+"/conditions/q/"+obs_country+"/+"+obs_city+".json",
-                                    "http://api.wunderground.com/api/"+key+"/forecast10day/q/"+home_country+"/"+home_city+".json"];
+                                    "http://api.wunderground.com/api/"+key+"/forecast10day/q/"+home_country+"/"+home_city+".json",
+                                    "http://api.wunderground.com/api/"+key+"/astronomy/q/"+home_country+"/"+home_city+".json"];
 
-                  var forecasts=[],code="",temp=NaN;
+                  var forecasts=[],code="",temp=NaN,astronomy={};
 
                   async.each(
                         URLS,
@@ -40,7 +41,7 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                                       if (j && j.response) {
                                                             if (j.forecast) {
                                                                   forecasts = [];
-                                                                  for (var i=0;i<5;i++) {
+                                                                  for (var i=0;i<6;i++) {
                                                                         forecasts.push({
                                                                               day:  dayLocalization[j.forecast.simpleforecast.forecastday[i].date.weekday_short],
                                                                               low:  parseInt(j.forecast.simpleforecast.forecastday[i].low.celsius),
@@ -54,18 +55,23 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                                                   temp = j.current_observation.temp_c;
                                                             }
 
+                                                            if (j.sun_phase) {
+                                                                  astronomy.sunrise = j.sun_phase.sunrise.hour+":"+j.sun_phase.sunrise.minute;
+                                                                  astronomy.sunset = j.sun_phase.sunset.hour+":"+j.sun_phase.sunset.minute;
+                                                            }
+
                                                       }
                                                       callback(null);
                                                 });
                                           }
                                     }).on('error', function(e) {
-                                          console.log("Got error during HTTP request!");
+                                          console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - Got error during HTTP request!').red);
                                           callback(e);
                                     });
                               },
                               function(err){
                                     if (!err) {
-                                          cbWeather(home_city,code,temp,forecasts);
+                                          cbWeather(home_city,code,temp,forecasts,astronomy);
                                     }
                               }
                         );

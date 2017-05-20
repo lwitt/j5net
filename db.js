@@ -12,16 +12,16 @@ module.exports = (mongo_url) => {
 
     db.on('error', function(error) {
         // console.log(error);
-        console.log((new Date().toLocaleTimeString() + ' - [database ' + mongo_url + '] disconnected!').red);
+        console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - [database ' + mongo_url + '] disconnected!').red);
         mongoose.disconnect();
     });
 
     db.on('open', function() {
-        console.log((new Date().toLocaleTimeString() + ' - [database ' + mongo_url + '] connected!').blue);
+        console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - [database ' + mongo_url + '] connected!').blue);
     });
 
     db.on('reconnected', function() {
-        console.log((new Date().toLocaleTimeString() + ' - [database ' + mongo_url + '] reconnected!').orange);
+        console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - [database ' + mongo_url + '] reconnected!').orange);
     });
 
     db.on('disconnected', function() {

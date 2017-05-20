@@ -33,7 +33,7 @@ module.exports = (app) => {
         if (topic.startsWith(app.get("mqtt_node_base"))) {
             var id = topic.split("/").pop();
 
-            console.log((new Date().toLocaleTimeString() + " - [database] node=" + id + " " + data).yellow);
+            console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + " - [database] node=" + id + " " + data).yellow);
 
             NodeModel.findOne({id : id}, function (err, res){
                 if (!err) {

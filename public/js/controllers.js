@@ -63,13 +63,11 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
 
       $scope.$on('socket:nodes', function (ev, data) {
-            console.log("receiving nodes");
+            // console.log("receiving nodes");
             for (var i in data) {
                   data[i].lastUpdate = (new Date()-new Date(data[i].lastUpdate))/1000;
                   data[i].firstSeen = (new Date()-new Date(data[i].firstSeen))/1000;
             }
-
-            console.log(data);
 
             if (data[20] && data[21]) {
                   data[2021] = {
@@ -77,7 +75,8 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
                               t: Math.min(data[20].lastData.t,data[21].lastData.t)
                         },
                         lastUpdate : Math.min(data[20].lastUpdate,data[21].lastUpdate),
-                        firstSeen : 0
+                        firstSeen : 0,
+                        name : "extérieur"
                   };
             }
             else {
@@ -85,7 +84,9 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
                         lastData : {
                               t: 0
                         },
-                        lastUpdate : 999999
+                        lastUpdate : 999999,
+                        firstSeen : 0,
+                        name : "extérieur"
                   }
             }
 
@@ -97,7 +98,7 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
 
       $scope.$on('socket:connect', function (ev, data) {
-            console.log('connect');
+            console.log('connected!');
             $scope.connected = true;
 
             // getting the initial node list
@@ -116,7 +117,7 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
       setInterval(function() {
             if (timer==null && $scope.connected==true) {
-                  console.log("initializing timer");
+                  // console.log("initializing timer");
                   timer = setInterval(function() {
                         webSocket.emit('nodes');
                         webSocket.emit('car-position');
@@ -125,10 +126,10 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
             }
 
             if (timer2==null && $scope.connected==true) {
-                  console.log("initializing timer2");
+                  // console.log("initializing timer2");
                   timer2 = setInterval(function() {
                         webSocket.emit('weather');
-                  },30*60000);
+                  },10*60000);
             }
       },5000);
 
@@ -148,8 +149,7 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
       });
 
       $scope.$on('socket:car-position', function (ev, data) {
-            console.log("car position received");
-            // console.log(data);
+            // console.log("car position received");
             if (data.lat)                 $scope.lat = data.lat;
             if (data.lng)                 $scope.lng = data.lng;
             if (data.lastUpdate)          $scope.lastCarUpdate = (Date.now()-data.lastUpdate)/1000;
@@ -158,8 +158,8 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
       });
 
       $scope.$on('socket:weather', function (ev, data) {
-            console.log("weather received");
-            console.log(data);
+            // console.log("weather received");
+            // console.log(data);
             $scope.weather = data;
       });
 
