@@ -44,5 +44,5 @@ module.exports = (app,config) => {
                                     config.wunderground_key);
 
       var j = schedule.scheduleJob('0 * * * *', myweather.getData);
-      myweather.getData();
+      //myweather.getData();
 }
