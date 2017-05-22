@@ -24,6 +24,10 @@
             templateUrl: 'partials/debug.html',
             controller: 'debugCtrl'
         }).
+        when('/car', {
+            templateUrl: 'partials/car.html',
+            controller: 'carCtrl'
+        }).
         when('/detail/:nodeId', {
             templateUrl: 'partials/detail.html',
             controller: 'nodeDetailCtrl'

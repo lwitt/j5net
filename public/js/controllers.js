@@ -2,21 +2,10 @@ var app = angular.module('j4netControllers', ['ngResource','nvd3','ui.bootstrap'
 
 
 app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMap', function($scope, webSocket, $http, nodes, NgMap) {
-      $scope.config = {};
       $scope.connected = false;
       $scope.nodes = nodes.get();
 
-      $scope.lat = NaN;
-      $scope.lng = NaN;
-      $scope.lastCarUpdate = NaN;
       $scope.weather = {};
-
-      // loading config (nodes to show in dashboard,..)
-      $http.get('config.json').success(function(data) {
-            $scope.config = data;
-            $scope.googleMapsUrl ="https://maps.googleapis.com/maps/api/js?key="+$scope.config.googleMapsAPIkey;
-      });
-
 
       $scope.graphstate = 0;
 
@@ -103,7 +92,6 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
             // getting the initial node list
             webSocket.emit('nodes');
-            webSocket.emit('car-position');
             webSocket.emit('weather');
       });
 
@@ -146,15 +134,6 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 
             $scope.graphstate = 2;
 
-      });
-
-      $scope.$on('socket:car-position', function (ev, data) {
-            // console.log("car position received");
-            if (data.lat)                 $scope.lat = data.lat;
-            if (data.lng)                 $scope.lng = data.lng;
-            if (data.lastUpdate)          $scope.lastCarUpdate = (Date.now()-data.lastUpdate)/1000;
-            if (data.distanceFromWork)    $scope.distanceFromWork = data.distanceFromWork;
-            if (data.distanceFromHome)    $scope.distanceFromHome = data.distanceFromHome;
       });
 
       $scope.$on('socket:weather', function (ev, data) {
