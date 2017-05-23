@@ -1,12 +1,18 @@
 var app = angular.module('j4netControllers');
 
-app.controller('carCtrl', ['$scope', 'webSocket', '$http', function($scope, webSocket, $http) {
+app.controller('carCtrl', ['$scope', 'webSocket', '$http','NgMap', function($scope, webSocket, $http, NgMap) {
+      var mymap = this;
+
       $scope.config = {};
+      $scope.googleMapsUrl = "";
 
       // loading config (nodes to show in dashboard,..)
       $http.get('config.json').success(function(data) {
+            // console.log("loading config");
             $scope.config = data;
             $scope.googleMapsUrl ="https://maps.googleapis.com/maps/api/js?key="+$scope.config.googleMapsAPIkey;
+            // console.log($scope.googleMapsUrl);
+            // mymap.map = NgMap.initMap('car');
       });
 
       $scope.lat = NaN;
