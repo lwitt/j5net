@@ -41,7 +41,7 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                                       if (j && j.response) {
                                                             if (j.forecast) {
                                                                   forecasts = [];
-                                                                  for (var i=0;i<6;i++) {
+                                                                  for (var i=0;i<10;i++) {
                                                                         forecasts.push({
                                                                               day:  dayLocalization[j.forecast.simpleforecast.forecastday[i].date.weekday_short],
                                                                               low:  parseInt(j.forecast.simpleforecast.forecastday[i].low.celsius),

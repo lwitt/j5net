@@ -27,7 +27,13 @@
 		<small><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>{{weather.astronomy.sunrise}} / <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>{{weather.astronomy.sunset}}</small>
 	</div>
 	<div class="col-xs-2 col-md-2" align="center">
-		&nbsp;
+		<div class="progress-wrapper">
+			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
+				{{((nodes[13].lastData.t && nodes[13].lastUpdate<300) ? (nodes[13].lastData.t | number:1)+"°C" : "n/a")}}
+			</div>
+			<round-progress max="45" current="((nodes[13].lastData.t && nodes[13].lastUpdate<300) ? nodes[13].lastData.t : 0)" color="#1fb1e1" bgcolor=rgba(0,0,0,0); radius="60" stroke="8" semi="false" rounded="true" clockwise="true" responsive="true" duration="700" animation="easeOutBounce" animation-delay="0"></round-progress>
+		</div>
+		<div align="center"><a href="#/detail/13"><!--<div><span class="badge">25</span></div>--><div><small>{{nodes[13].name || "n/a"}}</small></div></a></div>
 	</div>
 	<div class="col-xs-2 col-md-2" align="center">
 		<div class="progress-wrapper">
@@ -50,7 +56,8 @@
 </div>
 <div class="row panel">
 	<ng-repeat
-	<div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts">
+	<div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts | limitTo:6">
+	<!-- <div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts"> -->
 		<img ng-src="imgs/icons/white/svg/{{forecast.code}}.svg">
 		<h5>{{forecast.day}}</h5>
 		<div>
