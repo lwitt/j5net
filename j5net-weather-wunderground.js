@@ -21,7 +21,7 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                     "http://api.wunderground.com/api/"+key+"/forecast10day/q/"+home_country+"/"+home_city+".json",
                                     "http://api.wunderground.com/api/"+key+"/astronomy/q/"+home_country+"/"+home_city+".json"];
 
-                  var forecasts=[],code="",temp=NaN,astronomy={};
+                  var forecasts=[], current={}, astronomy={};
 
                   async.each(
                         URLS,
@@ -51,8 +51,13 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                                                   }
                                                             }
                                                             if (j.current_observation) {
-                                                                  code = j.current_observation.icon;
-                                                                  temp = j.current_observation.temp_c;
+                                                                  current.code = j.current_observation.icon;
+                                                                  current.temp = j.current_observation.temp_c;
+                                                                  current.wind_dir = j.current_observation.wind_dir;
+                                                                  current.wind_degrees = j.current_observation.wind_degrees;
+                                                                  current.wind_kph = j.current_observation.wind_kph;
+                                                                  current.wind_gust_kph = j.current_observation.wind_gust_kph;
+                                                                  current.pressure_mb= j.current_observation.pressure_mb;
                                                             }
 
                                                             if (j.sun_phase) {
@@ -71,7 +76,7 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                               },
                               function(err){
                                     if (!err) {
-                                          cbWeather(home_city,code,temp,forecasts,astronomy);
+                                          cbWeather(home_city,current,forecasts,astronomy);
                                     }
                               }
                         );

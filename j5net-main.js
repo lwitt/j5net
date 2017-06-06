@@ -69,14 +69,11 @@ module.exports = (http,app) => {
 
             if (topic.startsWith(app.get("mqtt_shared_base")+"weather")) {
 
-                  if (topic===app.get("mqtt_shared_base")+"weather/current_code")
-                        weather.currentCode = data.toString();
-
-                  if (topic===app.get("mqtt_shared_base")+"weather/current_temp")
-                        weather.currentTemp = parseFloat(data);
-
                   if (topic===app.get("mqtt_shared_base")+"weather/city")
                         weather.city = data.toString();
+
+                  if (topic===app.get("mqtt_shared_base")+"weather/current")
+                        weather.current = JSON.parse(data);
 
                   if (topic===app.get("mqtt_shared_base")+"weather/forecasts")
                         weather.forecasts = JSON.parse(data);
@@ -91,7 +88,7 @@ module.exports = (http,app) => {
 
 
       //load dependencies
-      require('./j5net-weather.js')(app,config,weather);
+      require('./j5net-weather.js')(app,config);
       require('./j5net-mqtt2db.js')(app);
 
 

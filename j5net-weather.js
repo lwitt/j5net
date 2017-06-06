@@ -10,21 +10,13 @@ module.exports = (app,config) => {
       broker = app.get('mqtt_broker');
       dest_base = app.get("mqtt_shared_base")+"weather/";
 
-      const cbPublishWeather = function (city,code,temp,forecasts,astronomy) {
-
-            dest = dest_base+"current_temp";
-            broker.publish(dest,temp.toString(),{qos:2,retain:true});
+      const cbPublishWeather = function (city,current,forecasts,astronomy) {
 
             dest = dest_base+"city";
             broker.publish(dest,city,{qos:2,retain:true});
 
-            dest = dest_base+"current_code";
-            broker.publish(dest,code.toString(),{qos:2,retain:true});
-
-            // for (var i=1;i<6;i++) {
-            //       dest = dest_base+"forecast"+i;
-            //       broker.publish(dest,JSON.stringify(forecasts[i-1]),{qos:2,retain:true});
-            // }
+            dest = dest_base+"current";
+            broker.publish(dest,JSON.stringify(current),{qos:2,retain:true});
 
             dest = dest_base+"forecasts";
             broker.publish(dest,JSON.stringify(forecasts),{qos:2,retain:true});
