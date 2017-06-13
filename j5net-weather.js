@@ -1,6 +1,6 @@
 //const weather = require('./j5net-weather-yahoo.js');
 const weatherplugin = require('./j5net-weather-wunderground.js');
-const schedule = require('node-schedule');
+const CronJob = require('cron').CronJob;
 
 var broker = null;
 var dest_base = "";
@@ -35,6 +35,6 @@ module.exports = (app,config) => {
                                     config.wunderground_obs_city,
                                     config.wunderground_key);
 
-      var j = schedule.scheduleJob('0 * * * *', myweather.getData);
+      var j = new CronJob('0 0 * * * *', myweather.getData,null,true,'Europe/Paris');
       //myweather.getData();
 }

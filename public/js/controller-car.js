@@ -1,4 +1,4 @@
-var app = angular.module('j4netControllers');
+var app = angular.module('j5netControllers');
 
 app.controller('carCtrl', ['$scope', 'webSocket', '$http','NgMap', function($scope, webSocket, $http, NgMap) {
       var mymap = this;
@@ -7,13 +7,15 @@ app.controller('carCtrl', ['$scope', 'webSocket', '$http','NgMap', function($sco
       $scope.googleMapsUrl = "";
 
       // loading config (nodes to show in dashboard,..)
-      $http.get('config.json').success(function(data) {
-            // console.log("loading config");
-            $scope.config = data;
-            $scope.googleMapsUrl ="https://maps.googleapis.com/maps/api/js?key="+$scope.config.googleMapsAPIkey;
-            // console.log($scope.googleMapsUrl);
-            // mymap.map = NgMap.initMap('car');
-      });
+      $http({method: 'GET', url: 'config.json'}).then(
+            function successCallback(response) {
+                  $scope.config = response.data;
+                  $scope.googleMapsUrl ="https://maps.googleapis.com/maps/api/js?key="+$scope.config.googleMapsAPIkey;
+            },
+            function errorCallback(response) {
+                  console.log("error while loading local config !");
+            }
+      );
 
       $scope.lat = NaN;
       $scope.lng = NaN;

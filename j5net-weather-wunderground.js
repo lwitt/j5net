@@ -11,6 +11,26 @@ const dayLocalization = {
       "Sun" : "dim"
 };
 
+const windDirectionLocalization = {
+      "Norh" :    "N",
+      "NNE" :     "NNE",
+      "NE" :      "NE",
+      "ENE" :     "ENE",
+      "East" :    "E",
+      "ESE" :     "ESE",
+      "SE" :      "SE",
+      "SSE" :     "SSE",
+      "South" :   "S",
+      "SSW" :     "SSO",
+      "SW" :      "SO",
+      "WSW" :     "OSO",
+      "West" :    "O",
+      "WNW" :     "ONO",
+      "NW" :      "NO",
+      "NNW" :     "NNO"
+};
+
+
 module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => {
       return {
             getData: () => {
@@ -53,7 +73,7 @@ module.exports = (cbWeather,home_country,home_city,obs_country,obs_city,key) => 
                                                             if (j.current_observation) {
                                                                   current.code = j.current_observation.icon;
                                                                   current.temp = j.current_observation.temp_c;
-                                                                  current.wind_dir = j.current_observation.wind_dir;
+                                                                  current.wind_dir = windDirectionLocalization[j.current_observation.wind_dir];
                                                                   current.wind_degrees = j.current_observation.wind_degrees;
                                                                   current.wind_kph = j.current_observation.wind_kph;
                                                                   current.wind_gust_kph = j.current_observation.wind_gust_kph;

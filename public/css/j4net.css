@@ -6,6 +6,10 @@ div[class^="col-"] {
     background-color: rgba(255, 0, 0, 0.2);
 }*/
 
+.screensaver {
+      background-color: #000000;
+}
+
 .progress-wrapper{
     position: relative;
     margin:20px auto;
@@ -19,24 +23,6 @@ div[class^="col-"] {
     font-weight: 100;
     line-height: 1;
 }
-
-.container{
-    width: 100%;
-    max-width: 960px;
-    margin:50px auto 100px;
-    text-align: center;
-}
-
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 50px;
-  background-color: rgba(0,0,0,0);
-}
-
 
 .sk-cube-grid {
   width: 40px;

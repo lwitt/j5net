@@ -1,4 +1,4 @@
-var app = angular.module('j4netControllers');
+var app = angular.module('j5netControllers');
 
 app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes', function($scope, webSocket, $routeParams,nodes) {
     $scope.nodeId = $routeParams.nodeId;

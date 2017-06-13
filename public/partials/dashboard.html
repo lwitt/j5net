@@ -27,14 +27,15 @@
 		<small><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>{{weather.astronomy.sunrise}} / <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>{{weather.astronomy.sunset}}</small>
 	</div>
 	<div class="col-xs-2 col-md-2" align="center">
-		<div class="progress-wrapper">
+		<div><h4>{{weather.current.wind_dir}}</h4><br>
+		<!-- <div class="progress-wrapper">
 			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
 				{{weather.current.wind_dir}}
 			</div>
 			<round-progress max="360" current="weather.current.wind_degrees" color="#1fb1e1" bgcolor=rgba(0,0,0,0); radius="60" stroke="8" semi="false" rounded="true" clockwise="true" responsive="true" duration="700" animation="easeOutBounce" animation-delay="0"></round-progress>
-		</div>
-		<div>{{weather.current.wind_kph}}-{{weather.current.wind_gust_kph}} <small>km/h</small></div>
-		<div>{{weather.current.pressure_mb}} mbar</div>
+		</div> -->
+		{{weather.current.wind_kph}}-{{weather.current.wind_gust_kph}} <small>km/h</small><br>
+		{{weather.current.pressure_mb}} mbar</div>
 	</div>
 
 

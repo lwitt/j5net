@@ -1,55 +1,24 @@
-var app = angular.module('j4netControllers', ['ngResource','nvd3','ui.bootstrap','angular-svg-round-progressbar']);
+var app = angular.module('j5netControllers', ['ngResource','nvd3','ui.bootstrap','angular-svg-round-progressbar']);
 
 
-app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMap', function($scope, webSocket, $http, nodes, NgMap) {
+app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 'screensaver', function($scope, $timeout, webSocket, nodes, screensaver) {
       $scope.connected = false;
       $scope.nodes = nodes.get();
+      $scope.screensaver = screensaver.active;
 
       $scope.weather = {};
 
-      $scope.graphstate = 0;
+      var everywhere = angular.element(window.document);
 
-      $scope.nvd3_data = [
-            {
-                  values : [],
-                  key : 'node values',
-                  color : '#ff7f0e'
+      everywhere.bind('click', function(event){
+            if (screensaver.active.value == true) {
+                  screensaver.active.value = false;
+                  $scope.$apply();
+                  screensaver.start();
             }
-      ];
-
-      $scope.nvd3_options = {
-            chart: {
-                  type: 'historicalBarChart',
-                  margin : {
-                        top: 20,
-                        right: 20,
-                        bottom: 40,
-                        left: 55
-                  },
-                  x: function(d){ return d.x; },
-                  y: function(d){ return d.y; },
-                  xAxis: {
-                        //axisLabel: 'X Axis',
-                        tickFormat: function(d) {
-                              return d3.time.format('%d/%m/%y %H:%M')(new Date(d))
-                        },
-                        showMaxMin: false,
-                        staggerLabels: true
-                  },
-                  xScale : d3.time.scale(),
-                  yAxis: {
-                        axisLabel: 'temp (°C)',
-                        tickFormat: function(d){
-                              return d3.format('.02f')(d);
-                        },
-                        axisLabelDistance: -10
-                  }
-            }
-      };
+      });
 
       var timer = null, timer2 = null;
-
-
 
       $scope.$on('socket:nodes', function (ev, data) {
             // console.log("receiving nodes");
@@ -103,6 +72,24 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
             timer = null; time2 = null;
       });
 
+      $scope.$on('socket:node-detail', function (ev, data) {
+            // console.log("receiving node details");
+            for (var i in data) {
+                  if (data[i]) {
+                        var obj = JSON.parse(data[i]);
+                        $scope.nvd3_data[0].values.push({x:new Date(i),y:obj.t});
+                  }
+            }
+            $scope.graphstate = 2;
+      });
+
+      $scope.$on('socket:weather', function (ev, data) {
+            // console.log("weather received");
+            // console.log(data);
+            $scope.weather = data;
+      });
+
+
       setInterval(function() {
             if (timer==null && $scope.connected==true) {
                   // console.log("initializing timer");
@@ -120,27 +107,6 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
                   },10*60000);
             }
       },5000);
-
-
-      $scope.$on('socket:node-detail', function (ev, data) {
-            // console.log("receiving node details");
-
-            for (var i in data) {
-                  if (data[i]) {
-                        var obj = JSON.parse(data[i]);
-                        $scope.nvd3_data[0].values.push({x:new Date(i),y:obj.t});
-                  }
-            }
-
-            $scope.graphstate = 2;
-
-      });
-
-      $scope.$on('socket:weather', function (ev, data) {
-            // console.log("weather received");
-            // console.log(data);
-            $scope.weather = data;
-      });
 
       // var askForDetail = function () {
       //
@@ -168,6 +134,9 @@ app.controller('mainController', ['$scope', 'webSocket', '$http', 'nodes', 'NgMa
 }]);
 
 
+app.controller('controlCtrl', ['$scope',function($scope) {
+
+}]);
 
 app.controller('dashboardCtrl', ['$scope',function($scope) {
 
@@ -177,10 +146,26 @@ app.controller('listCtrl', ['$scope','$rootScope','nodes',function($scope,$rootS
       $scope.nodes = nodes.list;
 }]);
 
-app.controller('debugCtrl', function() {
+app.controller('debugCtrl', ['$scope','localStorageService',function($scope,localStorageService) {
+      $scope.localStorageIsSupported=localStorageService.isSupported;
+}]);
 
-});
+app.controller('setupCtrl', ['$scope','$timeout','j5netConfig','screensaver',function($scope,$timeout,j5netConfig,screensaver) {
+      $scope.form_screensaver_delay = j5netConfig.getScreenSaverDelay();
+      $scope.saved=false;
 
-app.controller('setupCtrl', ['$scope',function($scope) {
+      $scope.update = function() {
+            j5netConfig.setScreenSaverDelay($scope.form_screensaver_delay);
+            screensaver.cancel();
+            screensaver.start();
+            $scope.saved=true;
+      };
 
+      $scope.closeAlert = function() {
+            $scope.saved=false;
+      };
+
+      $scope.toto = function() {
+            console.log("otor");
+      }
 }]);
