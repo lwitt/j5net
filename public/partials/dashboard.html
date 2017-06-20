@@ -2,7 +2,7 @@
 
 
 <div class="row">
-	<div class="col-xs-2 col-md-2" align="center">
+	<div class="col-2" align="center">
 		<div class="progress-wrapper">
 			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
 				{{((nodes[11].lastData.t && nodes[11].lastUpdate<300) ? (nodes[11].lastData.t | number:1)+"°C" : "n/a")}}
@@ -11,7 +11,8 @@
 		</div>
 		<div align="center"><a href="#/detail/11"><!--<div><span class="badge">11</span></div>--><div><small>{{nodes[11].name || "n/a"}}</small></div></a></div>
 	</div>
-	<div class="col-xs-2 col-md-2" align="center">
+
+	<div class="col-2" align="center">
 		<div class="progress-wrapper">
 			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
 				{{((nodes[12].lastData.t && nodes[12].lastUpdate<300) ? (nodes[12].lastData.t | number:1)+"°C" : "n/a")}}
@@ -20,26 +21,20 @@
 		</div>
 		<div align="center"><a href="#/detail/12"><!--<div><span class="badge">12</span></div>--><div><small>{{nodes[12].name || "n/a"}}</small></div></a></div>
 	</div>
-	<div class="col-xs-2 col-md-2" align="center">
-		<img ng-src="imgs/icons/white/svg/{{weather.current.code}}.svg">
-		<!-- <h5>actuel</h5> -->
-		<h4>{{((nodes[2021].lastData.t && nodes[2021].lastUpdate<300) ? (nodes[2021].lastData.t | number:1)+"&deg;" : "n/a")}}</h4>
-		<small><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>{{weather.astronomy.sunrise}} / <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>{{weather.astronomy.sunset}}</small>
-	</div>
-	<div class="col-xs-2 col-md-2" align="center">
-		<div><h4>{{weather.current.wind_dir}}</h4><br>
-		<!-- <div class="progress-wrapper">
-			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
-				{{weather.current.wind_dir}}
-			</div>
-			<round-progress max="360" current="weather.current.wind_degrees" color="#1fb1e1" bgcolor=rgba(0,0,0,0); radius="60" stroke="8" semi="false" rounded="true" clockwise="true" responsive="true" duration="700" animation="easeOutBounce" animation-delay="0"></round-progress>
-		</div> -->
-		{{weather.current.wind_kph}}-{{weather.current.wind_gust_kph}} <small>km/h</small><br>
-		{{weather.current.pressure_mb}} mbar</div>
+
+	<div class="col-2" align="center">
+		<img class="img-fluid" ng-src="imgs/icons/white/svg/{{weather.current.code}}.svg">
+		<h5>{{((nodes[2021].lastData.t && nodes[2021].lastUpdate<300) ? (nodes[2021].lastData.t | number:1)+"&deg;" : "n/a")}}</h5>
+		<small><span class="fa fa-chevron-up" aria-hidden="true"></span>{{weather.astronomy.sunrise}}  <span class="fa fa-chevron-down" aria-hidden="true"></span>{{weather.astronomy.sunset}}</small>
 	</div>
 
+	<div class="col-2" align="center">
+		{{weather.current.wind_dir}}
+		<small>{{weather.current.wind_kph}}-{{weather.current.wind_gust_kph}} km/h</small><br>
+		{{weather.current.pressure_mb}} mbar
+	</div>
 
-	<div class="col-xs-2 col-md-2" align="center">
+	<div class="col-2" align="center">
 		<div class="progress-wrapper">
 			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
 				{{((nodes[13].lastData.t && nodes[13].lastUpdate<300) ? (nodes[13].lastData.t | number:1)+"°C" : "n/a")}}
@@ -48,7 +43,8 @@
 		</div>
 		<div align="center"><a href="#/detail/13"><!--<div><span class="badge">25</span></div>--><div><small>{{nodes[13].name || "n/a"}}</small></div></a></div>
 	</div>
-	<div class="col-xs-2 col-md-2" align="center">
+
+	<div class="col-2" align="center">
 		<div class="progress-wrapper">
 			<div class="progress ngcloak" ng-style="{'left':'50%','top':'45%','bottom':'auto','transform':'translateY(-50%) translateX(-50%)','font-size':'17px'}">
 				{{((nodes[25].lastData.t && nodes[25].lastUpdate<300) ? (nodes[25].lastData.t | number:1)+"°C" : "n/a")}}
@@ -57,35 +53,34 @@
 		</div>
 		<div align="center"><a href="#/detail/25"><!--<div><span class="badge">25</span></div>--><div><small>{{nodes[25].name || "n/a"}}</small></div></a></div>
 	</div>
-
 </div>
 
 <div class="row">
-	<div class="col-xs-12 col-md-12">
+	<div class="col-12">
 		&nbsp;
 	</div>
 </div>
-<div class="row panel">
-	<ng-repeat
-	<div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts | limitTo:6">
-	<!-- <div class="col-xs-2 col-md-2" align="center" ng-repeat="forecast in weather.forecasts"> -->
-		<img ng-src="imgs/icons/white/svg/{{forecast.code}}.svg">
-		<h5>{{forecast.day}}</h5>
-		<div>
-			<h5>{{forecast.low}}&deg;</h5>
-			<h5>{{forecast.high}}&deg;</h5>
+<div class="row">
+	<div class="col-2 card" align="center" ng-repeat="forecast in weather.forecasts | limitTo:6">
+	<!-- <div class="col-2" align="center" ng-repeat="forecast in weather.forecasts"> -->
+		<img class="card-img-top" ng-src="imgs/icons/white/svg/{{forecast.code}}.svg">
+		<div align="center">
+			<b>{{forecast.day}}</b>
+			<div>
+				<p>{{forecast.low}}&deg;<br>{{forecast.high}}&deg;</p>
+			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12 col-md-12">
+	<div class="col-12">
 		&nbsp;
 	</div>
 </div>
 
 
 <!-- <div class="row">
-<div class="col-xs-12 col-md-12">
+<div class="col-12 col-md-12">
 <nvd3 options="nvd3_options" data="nvd3_data"></nvd3>
 </div>
 </div> -->

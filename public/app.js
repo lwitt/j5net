@@ -1,8 +1,4 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+// var app = angular.module('j5net', ['ngRoute', 'LocalStorageModule', 'j5netControllers','ui.bootstrap','btford.socket-io', 'ngMap','webcam']);
 var app = angular.module('j5net', ['ngRoute', 'LocalStorageModule', 'j5netControllers','ui.bootstrap','btford.socket-io', 'ngMap']);
 
 app.config(function($routeProvider,$locationProvider) {
@@ -57,6 +53,19 @@ app.factory('webSocket', function (socketFactory) {
       return mySocket;
 });
 
+app.factory('applog', function() {
+      var applog = {};
+      applog.messages = [];
+
+      applog.add = function (message,severity) {
+            if (applog.messages.length>25)
+                  applog.messages.shift();
+            applog.messages.push({date: new Date(),message : message, severity : severity});
+      }
+
+      return applog;
+});
+
 app.factory('nodes', function () {
       var nodes = {};
       nodes.list = {};
@@ -98,15 +107,17 @@ app.factory('j5netConfig', function (localStorageService) {
       return config;
 });
 
-app.factory('screensaver', function ($timeout,j5netConfig) {
+app.factory('screensaver', function ($timeout,j5netConfig,applog) {
       var screensaver = {};
       screensaver.timerPromise = null;
       screensaver.active = {value :false};
 
       screensaver.start = function() {
             if (j5netConfig.getScreenSaverDelay()!=0) {
+                  screensaver.cancel();
                   screensaver.timerPromise = $timeout(function() {
                         screensaver.active.value = true;
+                        applog.add("going to sleep!","info");
                   },
                   j5netConfig.getScreenSaverDelay()*1000);
             }
@@ -114,6 +125,11 @@ app.factory('screensaver', function ($timeout,j5netConfig) {
 
       screensaver.cancel = function() {
             $timeout.cancel(screensaver.timerPromise);
+      }
+
+      screensaver.reset = function() {
+            screensaver.cancel();
+            screensaver.start();
       }
 
       screensaver.start();

@@ -1,7 +1,7 @@
 var app = angular.module('j5netControllers', ['ngResource','nvd3','ui.bootstrap','angular-svg-round-progressbar']);
 
 
-app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 'screensaver', function($scope, $timeout, webSocket, nodes, screensaver) {
+app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 'screensaver', 'applog', function($scope, $timeout, webSocket, nodes, screensaver, applog) {
       $scope.connected = false;
       $scope.nodes = nodes.get();
       $scope.screensaver = screensaver.active;
@@ -13,9 +13,13 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
       everywhere.bind('click', function(event){
             if (screensaver.active.value == true) {
                   screensaver.active.value = false;
+                  applog.add("waking up!","success");
                   $scope.$apply();
                   screensaver.start();
             }
+            // else {
+            //       screensaver.reset();
+            // }
       });
 
       var timer = null, timer2 = null;
@@ -50,6 +54,7 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
 
             nodes.set(data);
             $scope.nodes = nodes.get();
+            applog.add("nodes received","info");
             //console.log(nodes.list);
             //console.log(nodes.count + " nodes");
       });
@@ -58,6 +63,8 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
       $scope.$on('socket:connect', function (ev, data) {
             console.log('connected!');
             $scope.connected = true;
+
+            applog.add("connected to backend","success");
 
             // getting the initial node list
             webSocket.emit('nodes');
@@ -70,6 +77,7 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
             clearInterval(timer);
             clearInterval(timer2);
             timer = null; time2 = null;
+            applog.add("connection to backend error","danger");
       });
 
       $scope.$on('socket:node-detail', function (ev, data) {
@@ -81,12 +89,14 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
                   }
             }
             $scope.graphstate = 2;
+            applog.add("details received","info");
       });
 
       $scope.$on('socket:weather', function (ev, data) {
             // console.log("weather received");
             // console.log(data);
             $scope.weather = data;
+            applog.add("weather received","info");
       });
 
 
@@ -146,8 +156,14 @@ app.controller('listCtrl', ['$scope','$rootScope','nodes',function($scope,$rootS
       $scope.nodes = nodes.list;
 }]);
 
-app.controller('debugCtrl', ['$scope','localStorageService',function($scope,localStorageService) {
+app.controller('debugCtrl', ['$scope','$window','localStorageService', 'applog',function($scope,$window,localStorageService,applog) {
       $scope.localStorageIsSupported=localStorageService.isSupported;
+      $scope.applog = applog;
+
+      $scope.reloadPage = function() {
+            applog.add("asked for application reload","warning");
+            $window.location.href="/";
+      };
 }]);
 
 app.controller('setupCtrl', ['$scope','$timeout','j5netConfig','screensaver',function($scope,$timeout,j5netConfig,screensaver) {
@@ -164,8 +180,4 @@ app.controller('setupCtrl', ['$scope','$timeout','j5netConfig','screensaver',fun
       $scope.closeAlert = function() {
             $scope.saved=false;
       };
-
-      $scope.toto = function() {
-            console.log("otor");
-      }
 }]);

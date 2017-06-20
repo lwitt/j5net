@@ -8,7 +8,7 @@ var dest_base = "";
 module.exports = (app,config) => {
 
       broker = app.get('mqtt_broker');
-      dest_base = app.get("mqtt_shared_base")+"weather/";
+      dest_base = app.get("config").mqtt_shared_base+"weather/";
 
       const cbPublishWeather = function (city,current,forecasts,astronomy) {
 

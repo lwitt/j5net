@@ -1,14 +1,26 @@
 <div class="row">
-	<div class="col-xs-6 col-md-6" align="right">
+	<div class="col" align="right">
 		localStorageIsSupported
 	</div>
-	<div class="col-xs-6 col-md-6" align="left">
-		<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show="localStorageIsSupported"></span>
-		<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-show="!localStorageIsSupported"></span>
+	<div class="col" align="left">
+		<span class="fa fa-check" aria-hidden="true" ng-show="localStorageIsSupported"></span>
+		<span class="fa fa-remove" aria-hidden="true" ng-show="!localStorageIsSupported"></span>
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12 col-md-12" align="center">
+	<div class="col" align="center">
+		<br><br><br>
+	</div>
+</div>
+<div class="row">
+	<div class="col-9" align="center">
+		<table class="table table-striped table-hover table-bordered">
+			<thead><tr><th>date</th><th>message</th></tr></thead>
+			<tbody>
+				<tr ng-repeat="message in applog.messages" ng-class="'table-'+message.severity"><td>{{message.date | date:'HH:mm:ss'}}</td><td>{{message.message}}</td></tr>
+			</tbody>
+		</table>
+		<!-- <webcam></webcam> -->
 		<!-- <div class="sk-cube-grid">
 			<div class="sk-cube sk-cube1"></div>
 			<div class="sk-cube sk-cube2"></div>
@@ -20,6 +32,8 @@
 			<div class="sk-cube sk-cube8"></div>
 			<div class="sk-cube sk-cube9"></div>
 		</div> -->
-
+	</div>
+	<div class="col-3" align="center">
+		<button type="button" class="btn btn-danger btn-lg" ng-click="reloadPage()">reload app</button>
 	</div>
 </div>

@@ -2,20 +2,12 @@ var nodes = {};
 var nodeinfos = {};
 
 var models = null;
-var NodeModel = null;
-var NodeDataModel = null;
-var NodeInfoModel = null;
-
-
 
 module.exports = (app) => {
 
-    models = app.get('db');
-    NodeModel = models.node;
-    NodeDataModel = models.nodedata;
-    NodeInfoModel = models.nodeinfo;
+    models = app.get('db').models;
 
-    NodeInfoModel.find({}, function (err,res){
+    models.nodeinfo.find({}, function (err,res){
         if (!err && res) {
             for (var i in res) {
                 var obj = {name : res[i].name};
@@ -26,16 +18,16 @@ module.exports = (app) => {
 
     var broker = app.get("mqtt_broker");
 
-    broker.subscribe(app.get("mqtt_node_base")+"#");
+    broker.subscribe(app.get("config").mqtt_node_base+"#");
 
     broker.on("message", function(topic,data) {
 
-        if (topic.startsWith(app.get("mqtt_node_base"))) {
+        if (topic.startsWith(app.get("config").mqtt_node_base)) {
             var id = topic.split("/").pop();
 
             console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + " - [database] node=" + id + " " + data).yellow);
 
-            NodeModel.findOne({id : id}, function (err, res){
+            models.node.findOne({id : id}, function (err, res){
                 if (!err) {
                     // existing node
                     if (res) {
@@ -61,7 +53,7 @@ module.exports = (app) => {
                     }
                     else {
                         // node to be created
-                        var n1 = new NodeModel({ id: id, lastData : data});
+                        var n1 = new models.node({ id: id, lastData : data});
                         n1.save(function(err) {
                             if (err)
                             console.log(err);
@@ -86,7 +78,7 @@ module.exports = (app) => {
                 }
             });
 
-            var nodedata = new NodeDataModel({ id: id, data: data});
+            var nodedata = new models.nodedata({ id: id, data: data});
 
             nodedata.save(function (err, savednode) {
                 if (err) console.error(err);

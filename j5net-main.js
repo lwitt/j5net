@@ -1,14 +1,4 @@
-var config = null;
-
-// if (process.env.NODE_ENV==='production')
-config = require('./config.js');
-// else
-// config = require('./config-dev.js');
-
 var models = null;
-var NodeModel = null;
-var NodeDataModel = null;
-var NodeInfoModel = null;
 
 var nodes = {};
 var nodeinfos = {};
@@ -23,10 +13,8 @@ weather = {};
 
 module.exports = (http,app) => {
 
-      models = app.get('db');
-      NodeModel = models.node;
-      NodeDataModel = models.nodedata;
-      NodeInfoModel = models.nodeinfo;
+      models = app.get('db').models;
+      var config = app.get('config');
 
       var broker = app.get("mqtt_broker");
       broker.subscribe(app.get("mqtt_shared_base")+"car_position/#");
@@ -110,7 +98,7 @@ module.exports = (http,app) => {
             socket.on('node-detail', function (data) {
                   //console.log("frontend asked for details");
 
-                  NodeDataModel.find(
+                  models.nodedata.find(
                         {
                               "time"  : {"$gte": new Date(data.start).toISOString(),"$lte" : new Date(data.end).toISOString()},
                               "id"    : data.id
@@ -156,7 +144,7 @@ module.exports = (http,app) => {
                   socket.on('nodes', function (data) {
                         // initialization of nodes & nodeinfos based on database
 
-                        NodeModel.find({}, function (err,res){
+                        models.node.find({}, function (err,res){
                               if (!err && res) {
                                     for (var i in res) {
                                           // ugly object clone
@@ -193,7 +181,7 @@ module.exports = (http,app) => {
 
             // initialize naming of the nodes
 
-            NodeInfoModel.find({}, function (err,res){
+            models.nodeinfo.find({}, function (err,res){
                   if (!err && res) {
                         for (var i in res) {
                               var obj = {name : res[i].name};

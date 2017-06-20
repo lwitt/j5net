@@ -1,28 +1,23 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html ng-app="j5net">
 <head>
       <title>j5net</title>
-      <meta charset="UTF-8">
+      <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="bower_components/tether/dist/js/tether.min.js"></script>
-
+      <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
       <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
       <script type="text/javascript" src="bower_components/angular-resource/angular-resource.min.js"></script>
       <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
       <!-- <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script> -->
 
-      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-      <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
       <script type="text/javascript" src="bower_components/angular-socket-io/socket.min.js"></script>
       <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+      <!-- <script type="text/javascript" src="bower_components/webcam/dist/webcam.min.js"></script> -->
 
       <script type="text/javascript" src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
 
@@ -37,62 +32,56 @@ and open the template in the editor.
       <script type="text/javascript" src="bower_components/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
 
       <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
-      <link rel="stylesheet" href="bower_components/bootswatch/slate/bootstrap.min.css">
+      <!-- <link rel="stylesheet" href="bower_components/bootswatch/slate/bootstrap.min.css"> -->
+      <link rel="stylesheet" href="css/bootstrap-slate-4-alpha.min.css">
+      <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
       <link rel="stylesheet" href="css/j4net.css">
-
 </head>
 <body ng-controller="mainController" ng-class="{'screensaver':screensaver.value}">
       <div ng-hide="screensaver.value">
-            <nav class="navbar navbar-default">
-                  <div class="container-fluid">
-                        <!-- Brand and toggle get grouped for better mobile display -->
-                        <div class="navbar-header">
-                              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                              </button>
-                              <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span> j5net</a>
-                        </div>
+            <nav class="navbar navbar-toggleable-md bg-faded" id="navMain">
+                  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span style="color: #e3f2fd;" class="align-middle fa fa-bars"></span>
+                  </button>
+                  <a class="navbar-brand" href="#"><span class="fa fa-signal" aria-hidden="true"></span> j5net</a>
 
-                        <!-- Collect the nav links, forms, and other content for toggling -->
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                              <ul class="nav navbar-nav">
-                                    <li><a href="#/"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> dashboard</a></li>
-                                    <li><a href="#/control"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> control</a></li>
-                                    <li><a href="#/list"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> details</a></li>
-                                    <li><a href="#/car"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> car position</a></li>
-                                    <li><a href="#/setup"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> setup</a></li>
-                                    <li><a href="#/debug">debug</a></li>
-
-                              </ul>
-                              <ul class="nav navbar-nav navbar-right">
-                                    <li>
-                                          <div ng-show="connected" class="glyphicon glyphicon-signal"></div>
-                                          <div ng-hide="connected" class="glyphicon glyphicon-remove"></div>
-                                    </li>
-                              </ul>
-                        </div><!-- /.navbar-collapse -->
-                  </div><!-- /.container-fluid -->
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                              <li class="nav-item"><a class="nav-link" href="#/dashboard"><span class="fa fa-dashboard" aria-hidden="true"></span> dashboard</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#/control"><span class="fa fa-power-off" aria-hidden="true"></span> control</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#/list"><span class="fa fa-th-list" aria-hidden="true"></span> list</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#/car"><span class="fa fa-car" aria-hidden="true"></span> car</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#/setup"><span class="fa fa-cogs" aria-hidden="true"></span> setup</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#/debug"><span class="fa fa-bug" aria-hidden="true"></span> debug</a></li>
+                              <li class="nav-item"><a class="nav-link" href="/logout"><span class="fa fa-sign-out" aria-hidden="true"></span> logout</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                              <li>
+                                    <div ng-show="connected" class="fa fa-signal"></div>
+                                    <div ng-hide="connected" class="fa fa-remove"></div>
+                                    <div class="active">messages <span class="badge badge-pill badge-primary">4</span></div>
+                              </li>
+                        </ul>
+                  </div>
             </nav>
 
             <div class="container-fluid" ng-view></div>
-            <footer class="footer">
-                  <div class="container">
-                        <p class="text-muted" align="center">&copy; 2017 - laurent witt</p>
-                  </div>
-            </footer>
 
-            <!-- <div align="center">
-                  <br>&copy; 2017 - laurent witt
-            </div> -->
+            <footer class="footer navbar-fixed-bottom">
+                  <p class="text-muted" align="center">&copy; 2017 - laurent witt</p>
+            </footer>
       </div>
 
       <script type="text/javascript" src="app.js"></script>
       <script type="text/javascript" src="js/controllers.js"></script>
       <script type="text/javascript" src="js/controller-detail.js"></script>
       <script type="text/javascript" src="js/controller-car.js"></script>
+      <script>
+      $(function(){
+           var navMain = $(".navbar-collapse");
+          navMain.on("click", "a:not([data-toggle])", null, function () {navMain.collapse('hide');});
+          });
+      </script>
 </body>
 </html>
