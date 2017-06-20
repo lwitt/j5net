@@ -36,5 +36,5 @@ module.exports = (app,config) => {
                                     config.wunderground_key);
 
       var j = new CronJob('0 0 * * * *', myweather.getData,null,true,'Europe/Paris');
-      //myweather.getData();
+      myweather.getData();
 }

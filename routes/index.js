@@ -32,7 +32,7 @@ router.get('/logout', function(req, res, next) {
 router.post('/upload', function(req, res, next) {
     var broker = req.app.get('mqtt_broker');
 
-    var dest_base = req.app.get("mqtt_shared_base");
+    var dest_base = req.app.get("config").mqtt_shared_base;
     dest = dest_base+"car_position/";
 
     // console.log(req.body);

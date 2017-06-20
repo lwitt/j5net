@@ -17,16 +17,16 @@ module.exports = (http,app) => {
       var config = app.get('config');
 
       var broker = app.get("mqtt_broker");
-      broker.subscribe(app.get("mqtt_shared_base")+"car_position/#");
-      broker.subscribe(app.get("mqtt_shared_base")+"weather/#");
+      broker.subscribe(app.get("config").mqtt_shared_base+"car_position/#");
+      broker.subscribe(app.get("config").mqtt_shared_base+"weather/#");
 
       broker.on("message", function(topic,data) {
-            if (topic.startsWith(app.get("mqtt_shared_base")+"car_position")) {
+            if (topic.startsWith(app.get("config").mqtt_shared_base+"car_position")) {
 
-                  if (topic===app.get("mqtt_shared_base")+"car_position/latitude")
+                  if (topic===app.get("config").mqtt_shared_base+"car_position/latitude")
                         lat = parseFloat(data);
 
-                  if (topic===app.get("mqtt_shared_base")+"car_position/longitude")
+                  if (topic===app.get("config").mqtt_shared_base+"car_position/longitude")
                         lng = parseFloat(data);
 
                   if (topic===app.get("mqtt_shared_base")+"car_position/last_update") {
@@ -55,21 +55,21 @@ module.exports = (http,app) => {
                   }
             }
 
-            if (topic.startsWith(app.get("mqtt_shared_base")+"weather")) {
+            if (topic.startsWith(app.get("config").mqtt_shared_base+"weather")) {
 
-                  if (topic===app.get("mqtt_shared_base")+"weather/city")
+                  if (topic===app.get("config").mqtt_shared_base+"weather/city")
                         weather.city = data.toString();
 
-                  if (topic===app.get("mqtt_shared_base")+"weather/current")
+                  if (topic===app.get("config").mqtt_shared_base+"weather/current")
                         weather.current = JSON.parse(data);
 
-                  if (topic===app.get("mqtt_shared_base")+"weather/forecasts")
+                  if (topic===app.get("config").mqtt_shared_base+"weather/forecasts")
                         weather.forecasts = JSON.parse(data);
 
-                  if (topic===app.get("mqtt_shared_base")+"weather/last_update")
+                  if (topic===app.get("config").mqtt_shared_base+"weather/last_update")
                         weather.lastUpdate = Date(data);
 
-                  if (topic===app.get("mqtt_shared_base")+"weather/astronomy")
+                  if (topic===app.get("config").mqtt_shared_base+"weather/astronomy")
                         weather.astronomy = JSON.parse(data);
             }
       });
