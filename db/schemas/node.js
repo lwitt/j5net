@@ -8,7 +8,7 @@ var nodeSchema = mongoose.Schema({
         index : true
     },
     lastData : {
-        type:       String,
+        type:       Object,
     },
     lastUpdate : {
         type:       Date,
