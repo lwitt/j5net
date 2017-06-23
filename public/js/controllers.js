@@ -145,7 +145,61 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
 
 
 app.controller('controlCtrl', ['$scope',function($scope) {
-
+      $scope.buttonList =
+      [
+            [
+                  {
+                        title :     'favoris',
+                        style :     'info',
+                        content:    [
+                              {     label :     "tous les velux",
+                                    type :      "updown"
+                              },
+                              {     label :     "tous les volets",
+                                    type :      "updown"
+                              }
+                        ]
+                  },
+                  {     title :     'salon',
+                        style :     'warning',
+                        content:    [
+                              {     label :     "luminaire",
+                                    type :      "onoff"
+                              },
+                              {     label :     "applique",
+                                    type :      "onoff"
+                              }
+                        ]
+                  }
+            ],
+            [
+                  {     title :     'cuisine',
+                        style :     'warning',
+                        content:    [
+                              {     label :     "spots",
+                                    type :      "onoff"
+                              },
+                              {     label :     "applique",
+                                    type :      "onoff"
+                              },
+                              {     label :     "spots table",
+                                    type :      "onoff"
+                              }
+                        ]
+                  },
+                  {     title :     'étage',
+                        style :     'warning',
+                        content:    [
+                              {     label :     "luminaire",
+                                    type :      "onoff"
+                              },
+                              {     label :     "applique",
+                                    type :      "onoff"
+                              }
+                        ]
+                  }
+            ]
+      ]
 }]);
 
 app.controller('dashboardCtrl', ['$scope',function($scope) {

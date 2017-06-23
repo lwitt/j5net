@@ -32,7 +32,7 @@ module.exports = (app) => {
                     // existing node
                     if (res) {
                         res.lastUpdate = new Date();
-                        res.lastData = data;
+                        res.lastData = JSON.parse(data);
                         res.save(function(err) {
                             if (err)
                             console.log(err);
@@ -53,7 +53,7 @@ module.exports = (app) => {
                     }
                     else {
                         // node to be created
-                        var n1 = new models.node({ id: id, lastData : data});
+                        var n1 = new models.node({ id: id, lastData : JSON.parse(data)});
                         n1.save(function(err) {
                             if (err)
                             console.log(err);
@@ -78,7 +78,7 @@ module.exports = (app) => {
                 }
             });
 
-            var nodedata = new models.nodedata({ id: id, data: data});
+            var nodedata = new models.nodedata({ id: id, data: JSON.parse(data)});
 
             nodedata.save(function (err, savednode) {
                 if (err) console.error(err);

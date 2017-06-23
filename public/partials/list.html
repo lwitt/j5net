@@ -12,11 +12,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="(key,value) in nodes" ng-class="{'danger': value.lastUpdate>90}">
-			<td><a href="#/detail/{{key}}"><span class="badge">{{key}}</span><br><small>{{value.name}}</small></a></td>
-			<td>{{value.lastData.t}}°C</td>
-			<td>{{value.lastData.h?value.lastData.h+"%":"-"}}</td>
-			<td>{{value.lastData.bat | number:2}}</td>
+		<tr ng-repeat="(key,value) in nodes" >
+			<td ng-class="{'table-danger': value.lastUpdate>90}"><a href="#/detail/{{key}}"><span class="badge badge-pill badge-default">{{key}}</span><br><small>{{value.name}}</small></a></td>
+			<td ng-class="{'table-danger': value.lastUpdate>90}">{{value.lastData.t | number:2}}°C</td>
+			<td ng-class="{'table-danger': value.lastUpdate>90}">{{value.lastData.h?value.lastData.h+"%":"-"}}</td>
+			<td ng-class="{'table-warning': value.lastData.bat<4.0}">{{value.lastData.bat | number:2}}</td>
 			<td>{{value.lastData.seq}}</td>
 			<td>{{value.lastUpdate | secondsToString }}</td>
 			<td>{{value.firstSeen | secondsToDateTime | date:'HH:mm:ss'}}</td>
