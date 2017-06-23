@@ -42,7 +42,6 @@ module.exports = (app) => {
                         var obj = JSON.parse(JSON.stringify(res));
                         delete obj._id;
                         delete obj.__v;
-                        obj.lastData = JSON.parse(obj.lastData);
                         if (nodeinfos[id]) {
                             obj.name = nodeinfos[id].name;
                         }
@@ -63,7 +62,6 @@ module.exports = (app) => {
                         var obj = JSON.parse(JSON.stringify(n1));
                         delete obj.id;
                         delete obj._id;
-                        obj.lastData = JSON.parse(obj.lastData);
                         if (nodeinfos[id]) {
                             obj.name = nodeinfos[id].name;
                         }
