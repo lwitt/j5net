@@ -7,7 +7,6 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
       $scope.graphtitle = "title";
       $scope.graphtitleminmax = "";
 
-
       $scope.nvd3_data = [
             {
                   values : [],
@@ -15,7 +14,7 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
                   color : '#ff7f0e'
             }
       ];
-      
+
       $scope.nvd3_options = {
             chart: {
                   type: 'lineChart',
@@ -34,6 +33,7 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
                         showMaxMin: false,
                   },
                   xDomain : [0,23],
+                  yDomain : [-20,50],
                   interpolate : 'basis',
                   yAxis: {
                         axisLabel: 'temp (°C)',
@@ -89,6 +89,11 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
       $scope.$on('socket:node-detail', function (ev, data) {
             console.log("receiving node details");
 
+            if (data.tmin && data.tmax) {
+                  $scope.graphtitleminmax = " min: "+data.tmin+"°C  max: "+data.tmax+"°C";
+                  $scope.nvd3_options.chart.yDomain = [Math.floor(data.tmin-2),Math.ceil(data.tmax+2)];
+            }
+
             for (var i in data.data) {
                   if (data.data[i]) {
                         $scope.nvd3_data[0].values.push({x:i,y:data.data[i]});
@@ -96,8 +101,6 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
             }
 
             $scope.graphtitle = nodes.get($routeParams.nodeId).name;
-            if (data.tmin && data.tmax)
-            $scope.graphtitleminmax = " min: "+data.tmin+"°C  max: "+data.tmax+"°C";
 
             $scope.graphstate = 2;
 
