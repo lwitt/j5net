@@ -11,7 +11,8 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
             {
                   values : [],
                   key : 'node values',
-                  color : '#ff7f0e'
+                  color : '#ff7f0e',
+                  area : true
             }
       ];
 
