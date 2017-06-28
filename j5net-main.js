@@ -98,8 +98,6 @@ module.exports = (http,app) => {
             socket.on('node-detail', function (data) {
                   //console.log("frontend asked for details");
 
-                  console.log(data);
-
                   models.nodedata.aggregate(
                         [
                         {     $match:  {
