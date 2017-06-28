@@ -33,9 +33,9 @@ db.on('disconnected', function() {
 module.exports ={
       Mongoose,
       models: {
-            node     : require('./schemas/node'),
-            nodedata : require('./schemas/nodedata'),
-            nodeinfo : require('./schemas/nodeinfo'),
-            user     : require('./schemas/user')
+            node              : require('./schemas/node'),
+            nodedata          : require('./schemas/nodedata'),
+            nodeinfo          : require('./schemas/nodeinfo'),
+            user              : require('./schemas/user'),
       }
 };

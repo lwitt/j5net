@@ -24,10 +24,10 @@ module.exports = (http,app) => {
             if (topic.startsWith(app.get("config").mqtt_shared_base+"car_position")) {
 
                   if (topic===app.get("config").mqtt_shared_base+"car_position/latitude")
-                        lat = parseFloat(data);
+                  lat = parseFloat(data);
 
                   if (topic===app.get("config").mqtt_shared_base+"car_position/longitude")
-                        lng = parseFloat(data);
+                  lng = parseFloat(data);
 
                   if (topic===app.get("config").mqtt_shared_base+"car_position/last_update") {
                         function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
@@ -58,19 +58,19 @@ module.exports = (http,app) => {
             if (topic.startsWith(app.get("config").mqtt_shared_base+"weather")) {
 
                   if (topic===app.get("config").mqtt_shared_base+"weather/city")
-                        weather.city = data.toString();
+                  weather.city = data.toString();
 
                   if (topic===app.get("config").mqtt_shared_base+"weather/current")
-                        weather.current = JSON.parse(data);
+                  weather.current = JSON.parse(data);
 
                   if (topic===app.get("config").mqtt_shared_base+"weather/forecasts")
-                        weather.forecasts = JSON.parse(data);
+                  weather.forecasts = JSON.parse(data);
 
                   if (topic===app.get("config").mqtt_shared_base+"weather/last_update")
-                        weather.lastUpdate = Date(data);
+                  weather.lastUpdate = Date(data);
 
                   if (topic===app.get("config").mqtt_shared_base+"weather/astronomy")
-                        weather.astronomy = JSON.parse(data);
+                  weather.astronomy = JSON.parse(data);
             }
       });
 
@@ -98,95 +98,150 @@ module.exports = (http,app) => {
             socket.on('node-detail', function (data) {
                   //console.log("frontend asked for details");
 
-                  models.nodedata.find(
+                  console.log(data);
+
+                  models.nodedata.aggregate(
+                        [
+                        {     $match:  {
+                                          time: {
+                                                $lte: new Date(data.end),
+                                                $gte: new Date(data.start)
+                                                //  $lt: "2017-06-27T23:59:59.000Z"
+                                          },
+                                          id:   parseInt(data.id)
+                                          }
+                        },
+                        {     $group:   {
+                                    _id :     {     hour:     {$hour: "$time"}},
+                                    avg :     {     $avg :    "$data.t"}
+                              }
+                        },
                         {
-                              "time"  : {"$gte": new Date(data.start).toISOString(),"$lte" : new Date(data.end).toISOString()},
-                              "id"    : data.id
-                        })
-                        .sort('time')
-                        .exec(
-                              function (dberr,dbres){
-                                    if (!dberr && dbres) {
-
-                                          var res = {}, tmin, tmax;
-
-                                          if (dbres[0] && dbres[0].data) {
-                                                tmin = JSON.parse(dbres[0].data).t;
-                                                tmax = JSON.parse(dbres[0].data).t;
-                                          }
-
-                                          for (i in dbres) {
-                                                res[dbres[i].time] = dbres[i].data;
-                                                if (dbres[i] && dbres[i].data) {
-                                                      var tres = JSON.parse(dbres[i].data).t;
-                                                      if (tres>tmax) tmax = tres;
-                                                      if (tres<tmin) tmin = tres;
-                                                }
-                                          }
-
-                                          res["tmin"] = tmin;
-                                          res["tmax"] = tmax;
-
-                                          console.log(("[" + new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - sending node details').cyan);
-                                          // console.log("tmin="+tmin);
-                                          // console.log("tmax="+tmax);
-                                          socket.emit('node-detail',res);
-                                    }
-                                    else
-                                    console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - query error').red);
+                              $sort:     {
+                                    "_id.hour" :  1
                               }
-                        );
-                  });
-
-
-                  /* web client asks for node list */
-
-                  socket.on('nodes', function (data) {
-                        // initialization of nodes & nodeinfos based on database
-
-                        models.node.find({}, function (err,res){
-                              if (!err && res) {
-                                    for (var i in res) {
-                                          // ugly object clone
-                                          var obj = JSON.parse(JSON.stringify(res[i]));
-                                          delete obj._id;
-                                          delete obj.__v;
-                                          obj.lastData = JSON.parse(obj.lastData);
-                                          // console.log(obj);
-                                          if (nodeinfos[obj.id]) {
-                                                obj.name = nodeinfos[obj.id].name;
-                                          }
-                                          else {
-                                                obj.name = "unknown";
-                                          }
-                                          nodes[obj.id] = obj;
-                                          delete nodes[obj.id].id;
-                                    }
-                                    socket.emit("nodes",nodes);
-                              }
-                        });
-                  });
-
-                  socket.on('car-position', function (data) {
-                        socket.emit("car-position",{lat:lat,lng:lng, lastUpdate: lastCarUpdate, distanceFromWork: distanceFromWork, distanceFromHome:distanceFromHome});
-                        // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - car position asked').cyan);
-                  });
-
-                  socket.on('weather', function (data) {
-                        socket.emit("weather",weather);
-                        // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - weather asked').cyan);
-                  });
-            });
-
-
-            // initialize naming of the nodes
-
-            models.nodeinfo.find({}, function (err,res){
-                  if (!err && res) {
-                        for (var i in res) {
-                              var obj = {name : res[i].name};
-                              nodeinfos[res[i].id] = obj;
                         }
-                  }
+                        ],
+                        function (dberr,dbres) {
+
+                              if (!dberr && dbres) {
+                                    var res = {}, tmin, tmax;
+                                    res.data = {}
+
+                                    if (dbres[0]) {
+                                          tmin = dbres[0].avg;
+                                          tmax = dbres[0].avg;
+                                    }
+
+                                    for (i in dbres) {
+                                          res.data[dbres[i]._id.hour-new Date().getTimezoneOffset()/60] = dbres[i].avg;
+
+                                          if (dbres[i] && dbres[i].avg) {
+                                                if (dbres[i].avg>tmax) tmax = dbres[i].avg;
+                                                if (dbres[i].avg<tmin) tmin = dbres[i].avg;
+                                          }
+                                    }
+
+                                    res["tmin"] = Math.round(tmin*100)/100;
+                                    res["tmax"] = Math.round(tmax*100)/100;
+
+                                    console.log(("[" + new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - sending node details').cyan);
+                                    socket.emit('node-detail',res);
+                              }
+                        }
+                  );
+
+
+                  // models.nodedata.find(
+                  //       {
+                  //             "time"  : {"$gte": new Date(data.start).toISOString(),"$lte" : new Date(data.end).toISOString()},
+                  //             "id"    : data.id
+                  //       }
+                  // )
+                  // .sort('time')
+                  // .exec(
+                  //       function (dberr,dbres){
+                  //             if (!dberr && dbres) {
+                  //
+                  //                   var res = {}, tmin, tmax;
+                  //
+                  //                   if (dbres[0] && dbres[0].data) {
+                  //                         tmin = JSON.parse(dbres[0].data).t;
+                  //                         tmax = JSON.parse(dbres[0].data).t;
+                  //                   }
+                  //
+                  //                   for (i in dbres) {
+                  //                         res[dbres[i].time] = dbres[i].data;
+                  //                         if (dbres[i] && dbres[i].data) {
+                  //                               var tres = JSON.parse(dbres[i].data).t;
+                  //                               if (tres>tmax) tmax = tres;
+                  //                               if (tres<tmin) tmin = tres;
+                  //                         }
+                  //                   }
+                  //
+                  //                   res["tmin"] = tmin;
+                  //                   res["tmax"] = tmax;
+                  //
+                  //                   console.log(("[" + new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - sending node details').cyan);
+                  //                   // console.log("tmin="+tmin);
+                  //                   // console.log("tmax="+tmax);
+                  //                   socket.emit('node-detail',res);
+                  //             }
+                  //             else
+                  //             console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - query error').red);
+                  //       }
+                  // );
             });
-      }
+
+
+            /* web client asks for node list */
+
+            socket.on('nodes', function (data) {
+                  // initialization of nodes & nodeinfos based on database
+
+                  models.node.find({}, function (err,res){
+                        if (!err && res) {
+                              for (var i in res) {
+                                    // ugly object clone
+                                    var obj = JSON.parse(JSON.stringify(res[i]));
+                                    delete obj._id;
+                                    delete obj.__v;
+                                    obj.lastData = obj.lastData;
+                                    // console.log(obj);
+                                    if (nodeinfos[obj.id]) {
+                                          obj.name = nodeinfos[obj.id].name;
+                                    }
+                                    else {
+                                          obj.name = "unknown";
+                                    }
+                                    nodes[obj.id] = obj;
+                                    delete nodes[obj.id].id;
+                              }
+                              socket.emit("nodes",nodes);
+                        }
+                  });
+            });
+
+            socket.on('car-position', function (data) {
+                  socket.emit("car-position",{lat:lat,lng:lng, lastUpdate: lastCarUpdate, distanceFromWork: distanceFromWork, distanceFromHome:distanceFromHome});
+                  // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - car position asked').cyan);
+            });
+
+            socket.on('weather', function (data) {
+                  socket.emit("weather",weather);
+                  // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - weather asked').cyan);
+            });
+      });
+
+
+      // initialize naming of the nodes
+
+      models.nodeinfo.find({}, function (err,res){
+            if (!err && res) {
+                  for (var i in res) {
+                        var obj = {name : res[i].name};
+                        nodeinfos[res[i].id] = obj;
+                  }
+            }
+      });
+}

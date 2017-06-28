@@ -1,7 +1,7 @@
-const config = require('../config.js');
-const db = require('../db.js');
+const config = require('../../config.js');
+const db = require('../../db/');
 
-const models = db(config.mongo_url).models;
+const models = db.models;
 const NodeModel = models["node"];
 const NodeDataModel = models["nodedata"];
 const NodeInfoModel = models["nodeinfo"];

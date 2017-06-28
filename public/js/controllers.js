@@ -80,18 +80,6 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
             applog.add("connection to backend error","danger");
       });
 
-      $scope.$on('socket:node-detail', function (ev, data) {
-            // console.log("receiving node details");
-            for (var i in data) {
-                  if (data[i]) {
-                        var obj = JSON.parse(data[i]);
-                        $scope.nvd3_data[0].values.push({x:new Date(i),y:obj.t});
-                  }
-            }
-            $scope.graphstate = 2;
-            applog.add("details received","info");
-      });
-
       $scope.$on('socket:weather', function (ev, data) {
             // console.log("weather received");
             // console.log(data);

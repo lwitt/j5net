@@ -1,20 +1,21 @@
-const config = require('../../config.js');
-const db = require('../index.js');
+const config = require('../config.js');
+const db = require('../db/index.js');
 
 const models = db(config.mongo_url).models;
 const NodeModel = models["node"];
 const NodeDataModel = models["nodedata"];
 const NodeInfoModel = models["nodeinfo"];
 
-const nodes_db = require('./nodes-db.json');
+const nodes_db = require('../db/init/nodes-db.json');
 
 var compt = 0;
 
 setInterval(function() {
         for (var i in nodes_db) {
 
-            var data = JSON.stringify({   t   : 20+(Math.round(Math.random()*1000)/100),
-                       bat : 3,
+            var data = JSON.stringify({
+                        t   : 20+(Math.round(Math.random()*1000)/100),
+                       bat : 2 + (Math.round(Math.random()*100)/100),
                        seq : compt });
 
             var n = new NodeDataModel({
