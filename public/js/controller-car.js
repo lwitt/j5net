@@ -4,7 +4,11 @@ app.controller('carCtrl', ['$scope', 'webSocket', '$http','NgMap', '$timeout', f
 
       $scope.config = {};
       $scope.pauseLoading=true;
-
+      $scope.lat=NaN;
+      $scope.lng=NaN;
+      $scope.lastCarUpdate=NaN;
+      $scope.distanceFromWork=NaN;
+      $scope.distanceFromHome=NaN;
 
       NgMap.getMap().then(function(map) {
             $scope.map = map;
@@ -30,7 +34,6 @@ app.controller('carCtrl', ['$scope', 'webSocket', '$http','NgMap', '$timeout', f
 
       $scope.$on('socket:car-position', function (ev, data) {
             console.log("receiving car position");
-            console.log(data);
             if (data.lat)                 $scope.lat = data.lat;
             if (data.lng)                 $scope.lng = data.lng;
             if (data.lastUpdate)          $scope.lastCarUpdate = (Date.now()-data.lastUpdate)/1000;
