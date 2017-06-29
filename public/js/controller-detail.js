@@ -6,13 +6,14 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
       $scope.graphstate = 0;
       $scope.graphtitle = "title";
       $scope.graphtitleminmax = "";
+      $scope.dt = null;
 
       $scope.nvd3_data = [
             {
-                  values : [],
-                  key : 'node values',
-                  color : '#ff7f0e',
-                  area : true
+                  values :    [],
+                  key :       '°C',
+                  color :     '#ff7f0e',
+                  area :      true
             }
       ];
 
@@ -21,20 +22,18 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
                   type: 'lineChart',
                   height: 400,
                   margin : {
-                        top: 20,
-                        right: 20,
-                        bottom: 40,
-                        left: 55
+                        top:        20,
+                        right:      20,
+                        bottom:     40,
+                        left:       55
                   },
-                  x: function(d){ return d.x; },
-                  y: function(d){ return d.y; },
                   useInteractiveGuideline: false,
                   xAxis: {
-                        ticks:12,
+                        ticks:      12,
                         showMaxMin: false,
                   },
-                  xDomain : [0,23],
-                  yDomain : [-20,50],
+                  xDomain :         [0,23],
+                  yDomain :         [-20,50],
                   interpolate : 'basis',
                   yAxis: {
                         axisLabel: 'temp (°C)',

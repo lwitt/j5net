@@ -29,9 +29,9 @@
 	</div>
 
 	<div class="col-2" align="center">
-		{{weather.current.wind_dir}}
-		<small>{{weather.current.wind_kph}}-{{weather.current.wind_gust_kph}} km/h</small><br>
-		{{weather.current.pressure_mb}} mbar
+		<div>{{weather.current.wind_dir}}</div>
+		<div><small>{{weather.current.wind_kph}}-{{weather.current.wind_gust_kph}} km/h</small></div>
+		<div>{{weather.current.pressure_mb}} mbar</div>
 	</div>
 
 	<div class="col-2" align="center">
@@ -70,6 +70,11 @@
 				<p>{{forecast.low}}&deg;<br>{{forecast.high}}&deg;</p>
 			</div>
 		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<nvd3 options="nvd3_options" data="nvd3_data"></nvd3>
 	</div>
 </div>
 <div class="row">

@@ -191,7 +191,44 @@ app.controller('controlCtrl', ['$scope',function($scope) {
 }]);
 
 app.controller('dashboardCtrl', ['$scope',function($scope) {
+      $scope.nvd3_data = [
+            {
+                  values :    [],
+                  key :       '°C',
+                  color :     '#ff7f0e',
+                  area :      true
+            }
+      ];
 
+      $scope.nvd3_options = {
+            chart: {
+                  type: 'lineChart',
+                  height: 400,
+                  margin : {
+                        top:        20,
+                        right:      20,
+                        bottom:     40,
+                        left:       55
+                  },
+                  useInteractiveGuideline: false,
+                  xAxis: {
+                        ticks:      12,
+                        showMaxMin: false,
+                  },
+                  xDomain :         [0,23],
+                  yDomain :         [-20,50],
+                  interpolate : 'basis',
+                  yAxis: {
+                        axisLabel: 'temp (°C)',
+                        tickFormat: function(d){
+                              return d3.format('.02f')(d);
+                        },
+                        axisLabelDistance: -10
+                  },
+                  callback: function(chart){
+                  }
+            }
+      };
 }]);
 
 app.controller('listCtrl', ['$scope','$rootScope','nodes',function($scope,$rootScope,nodes) {
