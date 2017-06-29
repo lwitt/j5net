@@ -1,7 +1,10 @@
 <div ng-if="(lat && lng)" class="row">
 	<!-- <div>{{lat}} {{lng}} {{googleMapsUrl}}</div> -->
 	<div>{{!lastCarUpdate ? "error" : (lastCarUpdate | secondsToString) }} - home : {{distanceFromHome|number}}km / work : {{distanceFromWork|number}}km</div>
-  	<div ng-if="!pauseLoading">
+	<div ng-if="!pauseLoading">
+		loading
+	</div>
+	<div ng-if="!pauseLoading">
 		<div ng-if="lat!=0 && lng!=0" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{googleMapsUrl}}">
      			<ng-map id="car" default-style="true" center="[{{lat}},{{lng}}]" zoom="16">
 				<!-- <ng-map id="car" zoom="16" center="[{{lat}},{{lng}}]"> -->
