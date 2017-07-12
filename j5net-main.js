@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 var models = null;
 
 var nodes = {};
@@ -124,7 +126,7 @@ module.exports = (http,app) => {
 
                               if (!dberr && dbres) {
                                     var res = {}, tmin, tmax;
-                                    res.data = {}
+                                    res.data = {};
 
                                     if (dbres[0]) {
                                           tmin = dbres[0].avg;

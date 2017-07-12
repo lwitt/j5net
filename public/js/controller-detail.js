@@ -94,6 +94,7 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
                   $scope.nvd3_options.chart.yDomain = [Math.floor(data.tmin-2),Math.ceil(data.tmax+2)];
             }
 
+            $scope.nvd3_data[0].values = [];
             for (var i in data.data) {
                   if (data.data[i]) {
                         $scope.nvd3_data[0].values.push({x:i,y:data.data[i]});
@@ -110,7 +111,7 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
 
             console.log("ask for detail");
             $scope.graphstate = 1;
-
+            // console.log($scope.dt);
             var startDate = new Date($scope.dt);
             startDate.setHours (0,0,0,0);
             var endDate = new Date($scope.dt);
@@ -121,8 +122,8 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
             webSocket.emit(
                   'node-detail',
                   {   id: $scope.nodeId,
-                        start : startDate.toString(),
-                        end : endDate.toString(),
+                        start : startDate,
+                        end : endDate,
                   }
             );
       }

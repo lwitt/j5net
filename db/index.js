@@ -3,7 +3,7 @@ const colors = require('colors');
 const config = require('../config.js');
 
 
-Mongoose.connect(config.mongo_url, { server:{auto_reconnect:true, econnectTries: Number.MAX_VALUE}});
+Mongoose.connect(config.mongo_url, { keepAlive : 120, server:{auto_reconnect:true, econnectTries: Number.MAX_VALUE}});
 
 var db = Mongoose.connection;
 
