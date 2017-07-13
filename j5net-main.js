@@ -98,12 +98,18 @@ module.exports = (http,app) => {
             socket.on('node-detail', function (data) {
                   //console.log("frontend asked for details");
 
+                  var startDate = new Date(data.start);
+                  startDate.setHours(startDate.getHours()-(new Date().getTimezoneOffset()/60));
+
+                  var endDate = new Date(data.end);
+                  endDate.setHours(endDate.getHours()-(new Date().getTimezoneOffset()/60));
+
                   models.nodedata.aggregate(
                         [
                         {     $match:  {
                                           time: {
-                                                $lte: new Date(data.end),
-                                                $gte: new Date(data.start)
+                                                $lte: endDate,
+                                                $gte: startDate
                                                 //  $lt: "2017-06-27T23:59:59.000Z"
                                           },
                                           id:   parseInt(data.id)
