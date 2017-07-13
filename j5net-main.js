@@ -99,10 +99,7 @@ module.exports = (http,app) => {
                   //console.log("frontend asked for details");
 
                   var startDate = new Date(data.start);
-                  startDate.setHours(startDate.getHours()-(new Date().getTimezoneOffset()/60));
-
                   var endDate = new Date(data.end);
-                  endDate.setHours(endDate.getHours()-(new Date().getTimezoneOffset()/60));
 
                   models.nodedata.aggregate(
                         [
