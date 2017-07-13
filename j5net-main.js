@@ -1,5 +1,3 @@
-const moment = require("moment");
-
 var models = null;
 
 var nodes = {};
