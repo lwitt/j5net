@@ -101,6 +101,10 @@ module.exports = (http,app) => {
                   var startDate = new Date(data.start);
                   var endDate = new Date(data.end);
 
+                  console.log(startDate);
+                  console.log(endDate);
+
+
                   models.nodedata.aggregate(
                         [
                         {     $match:  {
@@ -135,7 +139,7 @@ module.exports = (http,app) => {
                                     }
 
                                     for (i in dbres) {
-                                          res.data[dbres[i]._id.hour-new Date().getTimezoneOffset()/60] = dbres[i].avg;
+                                          res.data[(dbres[i]._id.hour-new Date().getTimezoneOffset()/60)%24] = dbres[i].avg;
 
                                           if (dbres[i] && dbres[i].avg) {
                                                 if (dbres[i].avg>tmax) tmax = dbres[i].avg;
