@@ -1,7 +1,7 @@
 var app = angular.module('j5netControllers');
 
 app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes', function($scope, webSocket, $routeParams,nodes) {
-      $scope.nodeId = $routeParams.nodeId;
+      $scope.nodeId = $routeParams.nodeId || 25;
 
       $scope.graphstate = 0;
       $scope.graphtitle = "title";

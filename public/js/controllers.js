@@ -235,6 +235,10 @@ app.controller('listCtrl', ['$scope','$rootScope','nodes',function($scope,$rootS
       $scope.nodes = nodes.list;
 }]);
 
+app.controller('pollenCtrl', ['$scope',function($scope) {
+
+}]);
+
 app.controller('debugCtrl', ['$scope','$window','localStorageService', 'applog',function($scope,$window,localStorageService,applog) {
       $scope.localStorageIsSupported=localStorageService.isSupported;
       $scope.applog = applog;

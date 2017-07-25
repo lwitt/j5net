@@ -28,6 +28,10 @@ app.config(function($routeProvider,$locationProvider) {
             templateUrl: 'partials/car.html',
             controller: 'carCtrl'
       }).
+      when('/pollen', {
+            templateUrl: 'partials/pollen.html',
+            controller: 'pollenCtrl'
+      }).
       when('/detail/:nodeId', {
             templateUrl: 'partials/detail.html',
             controller: 'nodeDetailCtrl'
