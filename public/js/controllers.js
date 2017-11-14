@@ -132,7 +132,13 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
 }]);
 
 
-app.controller('controlCtrl', ['$scope',function($scope) {
+app.controller('controlCtrl', ['$scope','webSocket',function($scope,webSocket) {
+
+        $scope.fireAction = function (nodeid,type,action) {
+            console.log("action fired " + nodeid + " : " + action);
+            webSocket.emit('action',JSON.stringify({nodeid: nodeid,type : type, action: action}));
+        }
+
       $scope.buttonList =
       [
             [
@@ -140,22 +146,30 @@ app.controller('controlCtrl', ['$scope',function($scope) {
                         title :     'favoris',
                         style :     'info',
                         content:    [
-                              {     label :     "tous les velux",
-                                    type :      "updown"
+                              {     label :           "tous les velux",
+                                    type :            "updown"
                               },
-                              {     label :     "tous les volets",
-                                    type :      "updown"
+                              {     label :           "tous les volets",
+                                    type :            "updown"
                               }
                         ]
                   },
                   {     title :     'salon',
                         style :     'warning',
                         content:    [
-                              {     label :     "luminaire",
-                                    type :      "onoff"
+                              {     label :           "luminaire",
+                                    type :            "onoff",
+                                    action_type :     "rc_emit",
+                                    action_on :       757050000,
+                                    action_off :      757049984,
+                                    action_nodeid :   100
                               },
-                              {     label :     "applique",
-                                    type :      "onoff"
+                              {     label :           "applique",
+                                    type :            "onoff",
+                                    action_type :     "rc_emit",
+                                    action_on :       757050000,
+                                    action_off :      757049984,
+                                    action_nodeid :   100
                               }
                         ]
                   }
@@ -175,14 +189,22 @@ app.controller('controlCtrl', ['$scope',function($scope) {
                               }
                         ]
                   },
-                  {     title :     'étage',
+                  {     title :     'extérieur',
                         style :     'warning',
                         content:    [
                               {     label :     "luminaire",
-                                    type :      "onoff"
+                                    type :      "onoff",
+                                    action_type :     "relay/1",
+                                    action_on :       "on",
+                                    action_off :      "off",
+                                    action_nodeid :   100
                               },
                               {     label :     "applique",
-                                    type :      "onoff"
+                                    type :      "onoff",
+                                    action_type :     "relay/2",
+                                    action_on :       "on",
+                                    action_off :      "off",
+                                    action_nodeid :   100
                               }
                         ]
                   }

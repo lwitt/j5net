@@ -43,7 +43,7 @@ router.post('/upload', function(req, res, next) {
         broker.publish(dest+"speed",""+req.body.speed,{qos:2, retain:true});
         // broker.publish(dest+"distance",""+req.body.dist,{qos:2, retain:true});
         broker.publish(dest+"nbsat",""+req.body.nbsat,{qos:2, retain:true});
-        broker.publish(dest+"last_update",Date.now().toString(),{qos:2, retain:true});
+        broker.publish(dest+"last_update",Math.floor(Date.now()/1000).toString(),{qos:2, retain:true});
         console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - car position published on '+dest).orange);
     }
     else {

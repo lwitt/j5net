@@ -76,7 +76,7 @@ module.exports = (http,app) => {
 
 
       //load dependencies
-      require('./j5net-weather.js')(app,config);
+      require('./j5net-cron.js')(app,config);
       require('./j5net-mqtt2db.js')(app);
 
 
@@ -98,19 +98,14 @@ module.exports = (http,app) => {
             socket.on('node-detail', function (data) {
                   //console.log("frontend asked for details");
 
-                  var startDate = new Date(data.start);
-                  var endDate = new Date(data.end);
-
-                  console.log(startDate);
-                  console.log(endDate);
-
+                  console.log(data);
 
                   models.nodedata.aggregate(
                         [
                         {     $match:  {
                                           time: {
-                                                $lte: endDate,
-                                                $gte: startDate
+                                                $lte: new Date(data.end),
+                                                $gte: new Date(data.start)
                                                 //  $lt: "2017-06-27T23:59:59.000Z"
                                           },
                                           id:   parseInt(data.id)
@@ -131,7 +126,7 @@ module.exports = (http,app) => {
 
                               if (!dberr && dbres) {
                                     var res = {}, tmin, tmax;
-                                    res.data = {};
+                                    res.data = {}
 
                                     if (dbres[0]) {
                                           tmin = dbres[0].avg;
@@ -139,7 +134,7 @@ module.exports = (http,app) => {
                                     }
 
                                     for (i in dbres) {
-                                          res.data[(dbres[i]._id.hour-new Date().getTimezoneOffset()/60)%24] = dbres[i].avg;
+                                          res.data[dbres[i]._id.hour-new Date().getTimezoneOffset()/60] = dbres[i].avg;
 
                                           if (dbres[i] && dbres[i].avg) {
                                                 if (dbres[i].avg>tmax) tmax = dbres[i].avg;
