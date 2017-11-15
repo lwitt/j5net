@@ -25,7 +25,7 @@ module.exports = (app) => {
 
             if (topic.startsWith(app.get("config").mqtt_node_base)) {
 
-                  var id = topic.split("/")[2];
+                  var id = topic.split("/")[3];
 
                   if (id && parseInt(id) && (parseInt(id)<100 || parseInt(id)>999)) {
 
