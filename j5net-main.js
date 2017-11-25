@@ -231,6 +231,14 @@ module.exports = (http,app) => {
                   socket.emit("weather",weather);
                   // console.log((new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + ' - weather asked').cyan);
             });
+
+            socket.on('action', function (data) {
+                  console.log("action!!");
+                  var odata = JSON.parse(data);
+                  if (odata && odata.nodeid && odata.action && odata.type && odata.action) {
+                        broker.publish(app.get("config").mqtt_node_base+odata.nodeid+"/"+odata.type,odata.action.toString());
+                  }
+            });
       });
 
 
