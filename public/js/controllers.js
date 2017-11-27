@@ -164,11 +164,11 @@ app.controller('controlCtrl', ['$scope','webSocket',function($scope,webSocket) {
                                     action_off :      757049984,
                                     action_nodeid :   100
                               },
-                              {     label :           "applique",
+                              {     label :           "lumière TV",
                                     type :            "onoff",
                                     action_type :     "rc_emit",
-                                    action_on :       757050000,
-                                    action_off :      757049984,
+                                    action_on :       757050001,
+                                    action_off :      757049985,
                                     action_nodeid :   100
                               }
                         ]
