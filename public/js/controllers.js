@@ -157,6 +157,13 @@ app.controller('controlCtrl', ['$scope','webSocket',function($scope,webSocket) {
                   {     title :     'salon',
                         style :     'warning',
                         content:    [
+                              {     label :           "tout le salon",
+                                    type :            "onoff",
+                                    action_type :     "rc_emit",
+                                    action_on :       "757050000+757050001+757050002",
+                                    action_off :      "757049984+757049985+757049986",
+                                    action_nodeid :   100
+                              },
                               {     label :           "luminaire",
                                     type :            "onoff",
                                     action_type :     "rc_emit",
