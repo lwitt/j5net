@@ -236,7 +236,16 @@ module.exports = (http,app) => {
                   console.log("action!!");
                   var odata = JSON.parse(data);
                   if (odata && odata.nodeid && odata.action && odata.type && odata.action) {
-                        broker.publish(app.get("config").mqtt_node_base+odata.nodeid+"/"+odata.type,odata.action.toString());
+                        if (typeof odata.action == "number") {
+                              broker.publish(app.get("config").mqtt_node_base+odata.nodeid+"/"+odata.type,odata.action.toString());
+                        }
+                        if (typeof odata.action == "string") {
+                              var actions = odata.action.split("+");
+                              for (var i=0;i<actions.length;i++) {
+                                    broker.publish(app.get("config").mqtt_node_base+odata.nodeid+"/"+odata.type,actions[i].toString());
+                              }
+                        }
+
                   }
             });
       });
