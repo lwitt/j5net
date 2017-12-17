@@ -160,8 +160,8 @@ app.controller('controlCtrl', ['$scope','webSocket',function($scope,webSocket) {
                               {     label :           "tout le salon",
                                     type :            "onoff",
                                     action_type :     "rc_emit",
-                                    action_on :       "757050000+757050001+757050002",
-                                    action_off :      "757049984+757049985+757049986",
+                                    action_on :       "757050000+757050001+757050002+1585815440",
+                                    action_off :      "757049984+757049985+757049986+1585815424",
                                     action_nodeid :   100
                               },
                               {     label :           "luminaire",
@@ -183,6 +183,13 @@ app.controller('controlCtrl', ['$scope','webSocket',function($scope,webSocket) {
                                     action_type :     "rc_emit",
                                     action_on :       757050002,
                                     action_off :      757049986,
+                                    action_nodeid :   100
+                              },
+                              {     label :           "girlande sapin",
+                                    type :            "onoff",
+                                    action_type :     "rc_emit",
+                                    action_on :       1585815440,
+                                    action_off :      1585815424,
                                     action_nodeid :   100
                               }
                         ]
