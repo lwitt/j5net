@@ -38,9 +38,9 @@ module.exports = (app,config) => {
                                     config.wunderground_obs_city,
                                     config.wunderground_key);
 
-      var publishUTCTime = function() {
-            broker.publish(utctime_dest_base,Math.floor(Date.now()/1000-new Date().getTimezoneOffset()*60).toString(),{qos:2,retain:false});
-      };
+      // var publishUTCTime = function() {
+      //       broker.publish(utctime_dest_base,Math.floor(Date.now()/1000-new Date().getTimezoneOffset()*60).toString(),{qos:2,retain:false});
+      // };
 
       var getTrafic = function() {
             console.log(("["+new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString() + '] - [trafic] getting trafic from Google Maps Directions').white);
@@ -77,8 +77,8 @@ module.exports = (app,config) => {
       };
 
       var j1 = new CronJob('0 0 * * * *', myweather.getData,null,true,'Europe/Paris');
-      var j2 = new CronJob('0 * * * * *', publishUTCTime,null,true,'Europe/Paris');
+      //var j2 = new CronJob('0 * * * * *', publishUTCTime,null,true,'Europe/Paris');
       var j3 = new CronJob('0 */5 * * * *', getTrafic,null,true,'Europe/Paris',null,true);
       myweather.getData();
-      publishUTCTime();
+      //publishUTCTime();
 }
