@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 var nodeDataSchema = mongoose.Schema({
       id : {
-            type:       Number,
+            type:       String,
             required :  true
       },
       data : {

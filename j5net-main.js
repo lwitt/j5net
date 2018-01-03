@@ -203,10 +203,11 @@ module.exports = (http,app) => {
                         if (!err && res) {
                               for (var i in res) {
                                     // ugly object clone
+                                    //console.dir(res[i]);
                                     var obj = JSON.parse(JSON.stringify(res[i]));
                                     delete obj._id;
                                     delete obj.__v;
-                                    obj.lastData = obj.lastData;
+                                    // obj.lastData = obj.lastData;
                                     // console.log(obj);
                                     if (nodeinfos[obj.id]) {
                                           obj.name = nodeinfos[obj.id].name;
@@ -215,7 +216,7 @@ module.exports = (http,app) => {
                                           obj.name = "unknown";
                                     }
                                     nodes[obj.id] = obj;
-                                    delete nodes[obj.id].id;
+                                    // delete nodes[obj.id].id;
                               }
                               socket.emit("nodes",nodes);
                         }

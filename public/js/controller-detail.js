@@ -86,6 +86,16 @@ app.controller('nodeDetailCtrl', ['$scope', 'webSocket', '$routeParams', 'nodes'
             opened: false
       };
 
+      $scope.$on('socket:weather', function (ev, data) {
+            console.log("weather received");
+            console.log(data);
+            $scope.graphtitleminmax = " min: xxx°C";
+            $scope.nvd3_data[0].values.push({x:0,y:10});
+            $scope.weather = data;
+            $scope.graphstate = 2;
+            
+      });
+
       $scope.$on('socket:node-detail', function (ev, data) {
             console.log("receiving node details");
 

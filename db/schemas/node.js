@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 var nodeSchema = mongoose.Schema({
     id : {
-        type:       Number,
+        type:       String,
         required :  true,
         unique :    true,
         index : true
@@ -18,12 +18,12 @@ var nodeSchema = mongoose.Schema({
         type:       Date,
         required :  true,
         default:    Date.now
-    },
-    firstSeen : {
-        type:       Date,
-        required :  true,
-        default:    Date.now
     }
+    // firstSeen : {
+    //     type:       Date,
+    //     required :  true,
+    //     default:    Date.now
+    // }
 });
 
 var NodeModel = mongoose.model('Node', nodeSchema);

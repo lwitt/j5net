@@ -31,18 +31,18 @@ app.controller('mainController', ['$scope', '$timeout', 'webSocket', 'nodes', 's
                   data[i].firstSeen = (new Date()-new Date(data[i].firstSeen))/1000;
             }
 
-            if (data[20] && data[21]) {
-                  data[2021] = {
+            if (data["gw0/20"] && data["gw0/21"]) {
+                  data["gw0/2021"] = {
                         lastData : {
-                              t: Math.min(data[20].lastData.t,data[21].lastData.t)
+                              t: Math.min(data["gw0/20"].lastData.t,data["gw0/21"].lastData.t)
                         },
-                        lastUpdate : Math.min(data[20].lastUpdate,data[21].lastUpdate),
+                        lastUpdate : Math.min(data["gw0/20"].lastUpdate,data["gw0/21"].lastUpdate),
                         firstSeen : 0,
                         name : "extérieur"
                   };
             }
             else {
-                  data[2021] = {
+                  data["gw0/2021"] = {
                         lastData : {
                               t: 0
                         },
