@@ -76,7 +76,7 @@ module.exports = (http,app) => {
 
 
       //load dependencies
-      require('./j5net-cron.js')(app,config);
+      //require('./j5net-cron.js')(app,config);
       //require('./j5net-mqtt2db.js')(app);
 
 
