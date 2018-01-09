@@ -75,11 +75,6 @@ module.exports = (http,app) => {
       });
 
 
-      //load dependencies
-      //require('./j5net-cron.js')(app,config);
-      //require('./j5net-mqtt2db.js')(app);
-
-
       console.log("                     __        ______        __     ".yellow);
       console.log("  __                /\\ \\__    /\\  ___\\     /'__`\\   ".yellow);
       console.log(" /\\_\\    ___      __\\ \\ ,_\\   \\ \\ \\__/    /\\ \\/\\ \\  ".yellow);
@@ -237,10 +232,12 @@ module.exports = (http,app) => {
                   console.log("action!!");
                   var odata = JSON.parse(data);
                   if (odata && odata.nodeid && odata.action && odata.type && odata.action) {
+                        // single action e.g a single lamp
                         if (typeof odata.action == "number") {
                               broker.publish(app.get("config").mqtt_node_base+odata.nodeid+"/"+odata.type,odata.action.toString());
                         }
                         if (typeof odata.action == "string") {
+                              // multiple actions (separated by "+")
                               var actions = odata.action.split("+");
                               for (var i=0;i<actions.length;i++) {
                                     broker.publish(app.get("config").mqtt_node_base+odata.nodeid+"/"+odata.type,actions[i].toString());
